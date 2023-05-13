@@ -3,7 +3,6 @@ package com.leggo.cooperativa.application.product;
 import com.leggo.cooperativa.domain.model.product.Price;
 import com.leggo.cooperativa.domain.model.product.ProductId;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
 public class CreateProductCommand

@@ -8,6 +8,7 @@ import com.leggo.cooperativa.domain.model.seller.FederatedOrder;
 import com.leggo.cooperativa.domain.model.seller.NonFederatedOrder;
 import com.leggo.cooperativa.domain.repositories.SellerRepository;
 import lombok.AllArgsConstructor;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;

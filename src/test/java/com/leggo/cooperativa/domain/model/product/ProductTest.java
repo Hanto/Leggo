@@ -1,6 +1,5 @@
 package com.leggo.cooperativa.domain.model.product;
 
-import com.leggo.cooperativa.application.product.CreateProductCommand;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

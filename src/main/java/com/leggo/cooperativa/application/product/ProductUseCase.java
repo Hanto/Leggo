@@ -1,12 +1,9 @@
 package com.leggo.cooperativa.application.product;
 
 import com.leggo.cooperativa.domain.model.product.Product;
-import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.domain.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Optional;
 
 @AllArgsConstructor

@@ -1,19 +1,17 @@
 package com.leggo.cooperativa.application.producer;
 
 import com.leggo.cooperativa.application.producer.CreateFieldsCommand.FieldDTO;
-import com.leggo.cooperativa.domain.model.product.Product;
-import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.domain.model.producer.Field;
 import com.leggo.cooperativa.domain.model.producer.Producer;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
-import com.leggo.cooperativa.domain.repositories.ProductRepository;
+import com.leggo.cooperativa.domain.model.product.Product;
+import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.domain.repositories.ProducerRepository;
+import com.leggo.cooperativa.domain.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 

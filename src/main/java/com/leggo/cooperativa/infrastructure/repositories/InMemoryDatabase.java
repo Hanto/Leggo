@@ -1,15 +1,15 @@
 package com.leggo.cooperativa.infrastructure.repositories;
 
-import com.leggo.cooperativa.domain.model.product.Product;
-import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.domain.model.common.Hectare;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.Producer;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
+import com.leggo.cooperativa.domain.model.product.Product;
+import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.domain.model.seller.FederatedOrder;
 import com.leggo.cooperativa.domain.model.seller.NonFederatedOrder;
-import com.leggo.cooperativa.domain.repositories.ProductRepository;
 import com.leggo.cooperativa.domain.repositories.ProducerRepository;
+import com.leggo.cooperativa.domain.repositories.ProductRepository;
 import com.leggo.cooperativa.domain.repositories.SellerRepository;
 
 import java.util.HashMap;
