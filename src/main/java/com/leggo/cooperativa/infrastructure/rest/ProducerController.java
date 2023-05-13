@@ -3,6 +3,8 @@ package com.leggo.cooperativa.infrastructure.rest;
 import com.leggo.cooperativa.application.producer.CreateFieldsCommand;
 import com.leggo.cooperativa.application.producer.CreateProducerCommand;
 import com.leggo.cooperativa.application.producer.ProducerUseCase;
+import com.leggo.cooperativa.infrastructure.rest.requests.CreateFieldsRequest;
+import com.leggo.cooperativa.infrastructure.rest.requests.CreateProducerRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

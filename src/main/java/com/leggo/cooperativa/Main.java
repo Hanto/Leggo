@@ -4,10 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CooperativaApplication {
+public class Main
+{
 
 	public static void main(String[] args) {
-		SpringApplication.run(CooperativaApplication.class, args);
+		SpringApplication.run(Main.class, args);
 	}
 
 }

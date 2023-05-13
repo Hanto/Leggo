@@ -1,5 +1,9 @@
-package com.leggo.cooperativa.application.buyorder;
+package com.leggo.cooperativa;
 
+import com.leggo.cooperativa.application.buyorder.BuyOrderUSeCase;
+import com.leggo.cooperativa.application.buyorder.BuyOrderValidator;
+import com.leggo.cooperativa.application.buyorder.CreateNonFederatedOrderCommand;
+import com.leggo.cooperativa.application.buyorder.CreatedFederatedOrderCommand;
 import com.leggo.cooperativa.application.producer.CreateFieldsCommand;
 import com.leggo.cooperativa.application.producer.CreateFieldsCommand.FieldDTO;
 import com.leggo.cooperativa.application.producer.CreateProducerCommand;
@@ -68,14 +72,14 @@ class ApplicationIT
             new ProductId("NARANJA"),
             new Year(2023) );
 
-        buyOrderUSeCase.createFederatedSeller(pepitoJuanitoSellers);
+        buyOrderUSeCase.createFederatedOrder(pepitoJuanitoSellers);
 
         CreateNonFederatedOrderCommand pepitoSeller = new CreateNonFederatedOrderCommand(
             new Year(2023),
             new ProducerId("PEPITO"),
             new ProductId("LIMON") );
 
-        buyOrderUSeCase.createNonFederatedSeller(pepitoSeller);
+        buyOrderUSeCase.createNonFederatedOrder(pepitoSeller);
 
         System.out.println(database);
     }

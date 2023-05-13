@@ -1,4 +1,4 @@
-package com.leggo.cooperativa.infrastructure.rest;
+package com.leggo.cooperativa.infrastructure.rest.requests;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

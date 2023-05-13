@@ -1,4 +1,4 @@
-package com.leggo.cooperativa.domain.model.seller;
+package com.leggo.cooperativa.domain.model.buyorder;
 
 import lombok.Data;
 

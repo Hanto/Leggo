@@ -2,7 +2,7 @@ package com.leggo.cooperativa.application.product;
 
 import com.leggo.cooperativa.domain.model.product.Price;
 import com.leggo.cooperativa.domain.model.product.ProductId;
-import com.leggo.cooperativa.infrastructure.rest.AddPriceRequest;
+import com.leggo.cooperativa.infrastructure.rest.requests.AddPriceRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

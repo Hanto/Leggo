@@ -4,7 +4,7 @@ import com.leggo.cooperativa.domain.model.common.Hectare;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
 import com.leggo.cooperativa.domain.model.product.ProductId;
-import com.leggo.cooperativa.infrastructure.rest.CreateFieldsRequest;
+import com.leggo.cooperativa.infrastructure.rest.requests.CreateFieldsRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

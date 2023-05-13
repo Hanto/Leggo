@@ -1,8 +1,8 @@
 package com.leggo.cooperativa.infrastructure.repositories;
 
+import com.leggo.cooperativa.domain.model.buyorder.FederatedOrder;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.product.ProductId;
-import com.leggo.cooperativa.domain.model.seller.FederatedOrder;
 
 import java.util.HashMap;
 import java.util.Map;

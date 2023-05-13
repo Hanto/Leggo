@@ -1,4 +1,4 @@
-package com.leggo.cooperativa.domain.model.seller;
+package com.leggo.cooperativa.domain.model.buyorder;
 
 import com.leggo.cooperativa.domain.model.common.Hectare;
 import com.leggo.cooperativa.domain.model.common.Year;
@@ -9,14 +9,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @RequiredArgsConstructor @Getter @ToString
-public class NonFederatedOrder implements BuyOrder
+public class FederatedOrder implements BuyOrder
 {
     private final BuyOrderId buyOrderId;
     private final Year year;
-    private final ProducerId producerId;
+    private final Set<ProducerId> producerIds;
     private final ProductId productId;
     private final LocalDateTime soldTime;
     private final Hectare hectares;
+
+    public boolean containsTheProducer(ProducerId producerId)
+    {
+        return producerIds.contains(producerId);
+    }
 }

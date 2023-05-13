@@ -1,20 +1,19 @@
 package com.leggo.cooperativa.application.buyorder;
 
+import com.leggo.cooperativa.domain.model.buyorder.BuyOrderId;
+import com.leggo.cooperativa.domain.model.buyorder.FederatedOrder;
+import com.leggo.cooperativa.domain.model.buyorder.NonFederatedOrder;
 import com.leggo.cooperativa.domain.model.common.Hectare;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.Producer;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
 import com.leggo.cooperativa.domain.model.product.ProductId;
-import com.leggo.cooperativa.domain.model.seller.BuyOrderId;
-import com.leggo.cooperativa.domain.model.seller.FederatedOrder;
-import com.leggo.cooperativa.domain.model.seller.NonFederatedOrder;
 import com.leggo.cooperativa.domain.repositories.ProducerRepository;
 import com.leggo.cooperativa.domain.repositories.SellerRepository;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,7 +26,7 @@ public class BuyOrderUSeCase
     private final SellerRepository sellerRepository;
     private final BuyOrderValidator validator;
 
-    public void createFederatedSeller(CreatedFederatedOrderCommand command)
+    public void createFederatedOrder(CreatedFederatedOrderCommand command)
     {
         Hectare hectares = getTotalHectares(command.getProducersIds(), command.getYear(), command.getProductId());
 
@@ -38,7 +37,7 @@ public class BuyOrderUSeCase
         sellerRepository.addFederatedSeller(order);
     }
 
-    public void createNonFederatedSeller(CreateNonFederatedOrderCommand command)
+    public void createNonFederatedOrder(CreateNonFederatedOrderCommand command)
     {
         Hectare hectares = getTotalHectares(command.getProducerId(), command.getYear(), command.getProductId());
 

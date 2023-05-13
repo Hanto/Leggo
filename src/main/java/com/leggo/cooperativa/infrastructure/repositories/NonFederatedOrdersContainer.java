@@ -1,9 +1,9 @@
 package com.leggo.cooperativa.infrastructure.repositories;
 
+import com.leggo.cooperativa.domain.model.buyorder.NonFederatedOrder;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
 import com.leggo.cooperativa.domain.model.product.ProductId;
-import com.leggo.cooperativa.domain.model.seller.NonFederatedOrder;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -3,6 +3,8 @@ package com.leggo.cooperativa.infrastructure.rest;
 import com.leggo.cooperativa.application.product.AddPriceCommand;
 import com.leggo.cooperativa.application.product.CreateProductCommand;
 import com.leggo.cooperativa.application.product.ProductUseCase;
+import com.leggo.cooperativa.infrastructure.rest.requests.AddPriceRequest;
+import com.leggo.cooperativa.infrastructure.rest.requests.CreateProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
