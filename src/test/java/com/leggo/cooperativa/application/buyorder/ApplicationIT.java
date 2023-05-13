@@ -24,8 +24,8 @@ import java.util.List;
 class ApplicationIT
 {
     private final InMemoryDatabase database = new InMemoryDatabase();
-    private final BuyOrderValidator validator = new BuyOrderValidator(database);
-    private final BuyOrderUSeCase buyOrderUSeCase = new BuyOrderUSeCase(database, database, database, validator);
+    private final BuyOrderValidator validator = new BuyOrderValidator(database, database, database);
+    private final BuyOrderUSeCase buyOrderUSeCase = new BuyOrderUSeCase(database, database, validator);
     private final ProductUseCase productUseCase = new ProductUseCase(database);
     private final ProducerUseCase producerUseCase = new ProducerUseCase(database, database);
 
@@ -75,7 +75,7 @@ class ApplicationIT
             new ProducerId("PEPITO"),
             new ProductId("LIMON") );
 
-        buyOrderUSeCase.createNonFedaratedSeller(pepitoSeller);
+        buyOrderUSeCase.createNonFederatedSeller(pepitoSeller);
 
         System.out.println(database);
     }

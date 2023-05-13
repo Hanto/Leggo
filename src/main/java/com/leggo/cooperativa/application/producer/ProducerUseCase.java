@@ -35,7 +35,8 @@ public class ProducerUseCase
 
     public void createFields(CreateFieldsCommand command)
     {
-        Producer producer = retrieveProducer(command.getProducerId());
+        Producer producer = producerRepository.findProducerById(command.getProducerId())
+            .orElseThrow(() -> new IllegalArgumentException(format("the producer: %s, doesnt exist", command.getProducerId())));
 
         List<Field> fields = command.getFieldDTOs().stream()
             .map(this::createFieldFromDTO)
@@ -49,29 +50,11 @@ public class ProducerUseCase
     // HELPER
     //--------------------------------------------------------------------------------------------------------
 
-    private Producer retrieveProducer(ProducerId producerId)
-    {
-        Optional<Producer> maybeProducer = producerRepository.findProducerById(producerId);
-
-        if (maybeProducer.isEmpty())
-            throw new IllegalArgumentException(format("the producer: %s, doesnt exist", producerId));
-
-        return maybeProducer.get();
-    }
-
-    private Product retrieveProduct(ProductId productId)
-    {
-        Optional<Product>maybeProduct = productRepository.findProductById(productId);
-
-        if (maybeProduct.isEmpty())
-            throw new IllegalArgumentException(format("the product: %s, doesnt exist", productId));
-
-        return maybeProduct.get();
-    }
-
     private Field createFieldFromDTO(FieldDTO dto)
     {
-        Product product = retrieveProduct(dto.getProductId());
+        Product product = productRepository.findProductById(dto.getProductId())
+            .orElseThrow(() -> new IllegalArgumentException(format("the product: %s, doesnt exist", dto.getProductId())));
+
         return Field.createField(product.getProductId(), dto.getHectares());
     }
 }

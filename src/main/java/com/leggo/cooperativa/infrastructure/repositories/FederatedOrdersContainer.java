@@ -16,7 +16,7 @@ public class FederatedOrdersContainer
     {
         Map<ProductId, FederatedOrder>innerMap = rootMap.computeIfAbsent(seller.getYear(), year -> new HashMap<>());
 
-        innerMap.put(seller.getProduct().getProductId(), seller);
+        innerMap.put(seller.getProductId(), seller);
     }
 
     public Optional<FederatedOrder> findBy(Year year, ProductId productId)

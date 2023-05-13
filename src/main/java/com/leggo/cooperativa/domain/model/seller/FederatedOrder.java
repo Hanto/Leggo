@@ -3,7 +3,8 @@ package com.leggo.cooperativa.domain.model.seller;
 import com.leggo.cooperativa.domain.model.common.Hectare;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.Producer;
-import com.leggo.cooperativa.domain.model.product.Product;
+import com.leggo.cooperativa.domain.model.producer.ProducerId;
+import com.leggo.cooperativa.domain.model.product.ProductId;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -16,19 +17,13 @@ public class FederatedOrder implements BuyOrder
 {
     private final BuyOrderId buyOrderId;
     private final Year year;
-    private final Set<Producer> producers;
-    private final Product product;
+    private final Set<ProducerId> producerIds;
+    private final ProductId productId;
     private final LocalDateTime soldTime;
+    private final Hectare hectares;
 
-    public boolean containsTheProducer(Producer producerId)
+    public boolean containsTheProducer(ProducerId producerId)
     {
-        return producers.contains(producerId);
-    }
-
-    public Hectare getTotalHectares()
-    {
-        return producers.stream()
-            .map(producer -> producer.getTotalHectaresFor(year, product.getProductId()))
-            .reduce(Hectare.ofZero(), Hectare::sum);
+        return producerIds.contains(producerId);
     }
 }

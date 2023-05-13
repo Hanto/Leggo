@@ -4,13 +4,11 @@ import com.leggo.cooperativa.domain.model.common.Hectare;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.Producer;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
-import com.leggo.cooperativa.domain.model.product.Product;
 import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.domain.model.seller.BuyOrderId;
 import com.leggo.cooperativa.domain.model.seller.FederatedOrder;
 import com.leggo.cooperativa.domain.model.seller.NonFederatedOrder;
 import com.leggo.cooperativa.domain.repositories.ProducerRepository;
-import com.leggo.cooperativa.domain.repositories.ProductRepository;
 import com.leggo.cooperativa.domain.repositories.SellerRepository;
 import lombok.AllArgsConstructor;
 
@@ -26,29 +24,26 @@ import static java.lang.String.format;
 public class BuyOrderUSeCase
 {
     private final ProducerRepository producerRepository;
-    private final ProductRepository productRepository;
     private final SellerRepository sellerRepository;
     private final BuyOrderValidator validator;
 
     public void createFederatedSeller(CreatedFederatedOrderCommand command)
     {
-        Product product = retrieveProduct(command.getProductId());
-        Set<Producer>producers = retrieveProducers(command.getProducersIds());
+        Hectare hectares = getTotalHectares(command.getProducersIds(), command.getYear(), command.getProductId());
 
         FederatedOrder order = new FederatedOrder(
-            new BuyOrderId(), command.getYear(), producers, product, LocalDateTime.now());
+            new BuyOrderId(), command.getYear(), command.getProducersIds(), command.getProductId(), LocalDateTime.now(), hectares);
 
         validator.validateFederateOrder(order);
         sellerRepository.addFederatedSeller(order);
     }
 
-    public void createNonFedaratedSeller(CreateNonFederatedOrderCommand command)
+    public void createNonFederatedSeller(CreateNonFederatedOrderCommand command)
     {
-        Product product = retrieveProduct(command.getProductId());
-        Producer producer = retrieveProducer(command.getProducerId());
+        Hectare hectares = getTotalHectares(command.getProducerId(), command.getYear(), command.getProductId());
 
         NonFederatedOrder order = new NonFederatedOrder(
-            new BuyOrderId(), command.getYear(), producer, product, LocalDateTime.now());
+            new BuyOrderId(), command.getYear(), command.getProducerId(), command.getProductId(), LocalDateTime.now(), hectares);
 
         validator.validateNonFederateOrder(order);
         sellerRepository.addNonFederatedSeller(order);
@@ -59,33 +54,38 @@ public class BuyOrderUSeCase
         sellerRepository.setMaxHectaresForSmallProducer(year, hectare);
     }
 
+    // HECTARES
+    //--------------------------------------------------------------------------------------------------------
+
+    private Hectare getTotalHectares(Collection<ProducerId>producersIds, Year year, ProductId productId)
+    {
+        Set<Producer>producers = retrieveProducers(producersIds);
+
+        return producers.stream()
+            .map(producer -> producer.getTotalHectaresFor(year, productId))
+            .reduce(Hectare.ofZero(), Hectare::sum);
+    }
+
+    public Hectare getTotalHectares(ProducerId producerId, Year year, ProductId productId)
+    {
+        Producer producer = retrieveProducer(producerId);
+
+        return producer.getTotalHectaresFor(year, productId);
+    }
+
     // HELPER
     //--------------------------------------------------------------------------------------------------------
+
+    private Producer retrieveProducer(ProducerId producerId)
+    {
+        return producerRepository.findProducerById(producerId)
+            .orElseThrow(() -> new IllegalArgumentException(format("the producer: %s, doesnt exist", producerId)) );
+    }
 
     private Set<Producer> retrieveProducers(Collection<ProducerId>producerIds)
     {
         return producerIds.stream()
             .map(this::retrieveProducer)
             .collect(Collectors.toUnmodifiableSet());
-    }
-
-    private Producer retrieveProducer(ProducerId producerId)
-    {
-        Optional<Producer> maybeProducer = producerRepository.findProducerById(producerId);
-
-        if (maybeProducer.isEmpty())
-            throw new IllegalArgumentException(format("the producer: %s, doesnt exist", producerId));
-
-        return maybeProducer.get();
-    }
-
-    private Product retrieveProduct(ProductId productId)
-    {
-        Optional<Product>maybeProduct = productRepository.findProductById(productId);
-
-        if (maybeProduct.isEmpty())
-            throw new IllegalArgumentException(format("the product: %s, doesnt exist", productId));
-
-        return maybeProduct.get();
     }
 }

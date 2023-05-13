@@ -18,7 +18,7 @@ public class NonFederatedOrdersContainer
     public void add(NonFederatedOrder seller)
     {
         Map<ProducerId, List<NonFederatedOrder>>innerMap = rootMap.computeIfAbsent(seller.getYear(), year -> new HashMap<>());
-        List<NonFederatedOrder>list = innerMap.computeIfAbsent(seller.getProducer().getProducerId(), productId -> new ArrayList<>());
+        List<NonFederatedOrder>list = innerMap.computeIfAbsent(seller.getProducerId(), productId -> new ArrayList<>());
         list.add(seller);
     }
 
@@ -31,7 +31,7 @@ public class NonFederatedOrdersContainer
             List.of();
 
        return sellers.stream()
-            .filter(nonFederatedSeller -> nonFederatedSeller.getProduct().equals(productId))
+            .filter(nonFederatedSeller -> nonFederatedSeller.getProductId().equals(productId))
             .findFirst();
     }
 
