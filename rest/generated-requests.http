@@ -1,0 +1,139 @@
+
+POST http://localhost:8080/api/buyOrder/limit/2023/5
+###
+POST http://localhost:8080/api/product/
+Content-Type: application/json
+
+{
+  "productId": "NARANJA",
+  "productName": "naranja",
+  "productionPerHectare": 100,
+  "initialPrice": "2.4"
+}
+
+###
+POST http://localhost:8080/api/product/
+Content-Type: application/json
+
+{
+  "productId": "LIMON",
+  "productName": "limon",
+  "productionPerHectare": 200,
+  "initialPrice": "3.5"
+}
+###
+POST http://localhost:8080/api/product/price
+Content-Type: application/json
+
+{
+  "productId": "NARANJA",
+  "price": "3.0",
+  "day": "2023-10-13"
+}
+###
+POST http://localhost:8080/api/producer
+Content-Type: application/json
+
+{
+  "producerId": "PEPITO",
+  "producerName": "pepito"
+}
+###
+POST http://localhost:8080/api/producer
+Content-Type: application/json
+
+{
+  "producerId": "JUANITO",
+  "producerName": "juanito"
+}
+###
+POST http://localhost:8080/api/producer
+Content-Type: application/json
+
+{
+  "producerId": "ROCKEFELLER",
+  "producerName": "rockefeller"
+}
+###
+POST http://localhost:8080/api/producer/fields
+Content-Type: application/json
+
+{
+  "producerId": "PEPITO",
+  "year": 2023,
+  "fields": [
+    {
+      "productId": "NARANJA",
+      "hectares": 2
+    },
+    {
+      "productId": "LIMON",
+      "hectares": 2.5
+    }
+  ]
+}
+
+<> 2023-05-13T235934.500.json
+###
+POST http://localhost:8080/api/producer/fields
+Content-Type: application/json
+
+{
+  "producerId": "JUANITO",
+  "year": 2023,
+  "fields": [
+    {
+      "productId": "NARANJA",
+      "hectares": 1
+    },
+    {
+      "productId": "LIMON",
+      "hectares": 0.5
+    }
+  ]
+}
+###
+POST http://localhost:8080/api/producer/fields
+Content-Type: application/json
+
+{
+  "producerId": "ROCKEFELLER",
+  "year": 2023,
+  "fields": [
+    {
+      "productId": "NARANJA",
+      "hectares": 20
+    },
+    {
+      "productId": "LIMON",
+      "hectares": 30
+    }
+  ]
+}
+
+<> 2023-05-14T001910.500.json
+<> 2023-05-14T000056.500.json
+<> 2023-05-13T235959.500.json
+<> 2023-05-13T235746.500.json
+###
+POST http://localhost:8080/api/buyorder/nonfedered
+Content-Type: application/json
+
+{
+  "year": 2023,
+  "producerId": "PEPITO",
+  "productId": "NARANJA"
+}
+###
+POST http://localhost:8080/api/buyorder/federed
+Content-Type: application/json
+
+{
+  "year": 2023,
+  "producerIds": ["PEPITO", "JUANITO"],
+  "productId": "NARANJA"
+}
+
+<> 2023-05-14T002430.500.json
+<> 2023-05-14T002354.500.json
+###
