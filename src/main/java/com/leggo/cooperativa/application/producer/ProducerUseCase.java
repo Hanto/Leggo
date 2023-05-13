@@ -3,9 +3,7 @@ package com.leggo.cooperativa.application.producer;
 import com.leggo.cooperativa.application.producer.CreateFieldsCommand.FieldDTO;
 import com.leggo.cooperativa.domain.model.producer.Field;
 import com.leggo.cooperativa.domain.model.producer.Producer;
-import com.leggo.cooperativa.domain.model.producer.ProducerId;
 import com.leggo.cooperativa.domain.model.product.Product;
-import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.domain.repositories.ProducerRepository;
 import com.leggo.cooperativa.domain.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -38,7 +36,7 @@ public class ProducerUseCase
         Producer producer = producerRepository.findProducerById(command.getProducerId())
             .orElseThrow(() -> new IllegalArgumentException(format("the producer: %s, doesnt exist", command.getProducerId())));
 
-        List<Field> fields = command.getFieldDTOs().stream()
+        List<Field> fields = command.getFields().stream()
             .map(this::createFieldFromDTO)
             .toList();
 

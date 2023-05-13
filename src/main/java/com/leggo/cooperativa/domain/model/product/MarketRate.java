@@ -1,12 +1,13 @@
 package com.leggo.cooperativa.domain.model.product;
 
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.TreeMap;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor @ToString
 public class MarketRate
 {
     private final TreeMap<LocalDate, Price> pricesByDay = new TreeMap<>();

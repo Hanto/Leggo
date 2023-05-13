@@ -1,18 +1,17 @@
 package com.leggo.cooperativa.domain.model.product;
 
 import lombok.Getter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@ToString
 public class Product
 {
-    @Getter
-    private final ProductId productId;
-    @Getter
-    private final String name;
-    @Getter
-    private final float productionPerHectare;
+    @Getter private final ProductId productId;
+    @Getter private final String name;
+    @Getter private final float productionPerHectare;
     private final MarketRate marketRates;
 
     private Product(ProductId productId, String name, float productionPerHectare, MarketRate cotizaciones)

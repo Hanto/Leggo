@@ -25,15 +25,9 @@ public class Producer
     public void createFieldsFor(Year year, List<Field>fields)
     {
         if (fieldsByYear.containsKey(year))
-            throw new IllegalArgumentException("There are already fields for this year");
+            throw new IllegalArgumentException(String.format("The producer: %s, already has fields for this year", producerId));
 
         fieldsByYear.put(year, fields);
-    }
-
-    public boolean isSelling(Year year, ProductId productId)
-    {
-        return fieldsByYear.getOrDefault(year, List.of()).stream()
-            .anyMatch(field -> field.getProductId().equals(productId));
     }
 
     public Hectare getTotalHectaresFor(Year year)
