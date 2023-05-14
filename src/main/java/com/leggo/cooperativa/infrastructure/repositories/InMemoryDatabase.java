@@ -1,10 +1,8 @@
 package com.leggo.cooperativa.infrastructure.repositories;
 
-import com.leggo.cooperativa.domain.model.buyorder.BuyOrder;
 import com.leggo.cooperativa.domain.model.buyorder.FederatedOrder;
 import com.leggo.cooperativa.domain.model.buyorder.NonFederatedOrder;
 import com.leggo.cooperativa.domain.model.common.Hectare;
-import com.leggo.cooperativa.domain.model.common.Kilogram;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.Producer;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
@@ -14,11 +12,9 @@ import com.leggo.cooperativa.domain.repositories.ProducerRepository;
 import com.leggo.cooperativa.domain.repositories.ProductRepository;
 import com.leggo.cooperativa.domain.repositories.SellerRepository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 public class InMemoryDatabase implements ProductRepository, ProducerRepository, SellerRepository
@@ -123,32 +119,5 @@ public class InMemoryDatabase implements ProductRepository, ProducerRepository, 
     public List<NonFederatedOrder>findNonFederatedOrdersBy(Year year, ProductId productId)
     {
         return nonFederatedSellers.findBy(year, productId);
-    }
-
-    public Kilogram totalKilogramsBought(Year year, ProductId productId)
-    {
-        Optional<FederatedOrder> maybeFederatedOrder = federatedSellers.findBy(year, productId);
-        List<NonFederatedOrder> nonFederatedOrders = nonFederatedSellers.findBy(year, productId);
-
-        List<BuyOrder>allOrders = new ArrayList<>(nonFederatedOrders);
-        allOrders.add(maybeFederatedOrder.orElse(null));
-
-        return allOrders.stream()
-            .filter(Objects::nonNull)
-            .map(BuyOrder::getTotalKilograms)
-            .reduce(Kilogram.of(0), Kilogram::sum);
-    }
-
-    public Kilogram totalKilogramsBoughtFrom(Year year, ProductId productId, ProducerId producerId)
-    {
-        Kilogram fromFederatedOrder = federatedSellers.findBy(year, productId)
-            .map(federatedOrder -> federatedOrder.getContributionOf(producerId))
-            .orElse(Kilogram.of(0));
-
-        Kilogram fromNonFederatedOrders = nonFederatedSellers.findBy(year, producerId,productId)
-            .map(NonFederatedOrder::getTotalKilograms)
-            .orElse(Kilogram.of(0));
-
-       return fromFederatedOrder.sum(fromNonFederatedOrders);
     }
 }
