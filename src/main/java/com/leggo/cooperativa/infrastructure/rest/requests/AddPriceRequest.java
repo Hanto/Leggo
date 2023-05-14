@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class AddPriceRequest
 {
     private final String productId;
-    private final String price;
+    private final String pricePerKilogram;
     @JsonFormat(pattern="yyyy-MM-dd")
     private final LocalDate day;
 }

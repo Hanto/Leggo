@@ -18,7 +18,7 @@ public class ProductUseCase
         if (maybeProduct.isPresent())
             throw new IllegalArgumentException(String.format("the product: %s, already exists", command.getProductId()));
 
-        Product product = Product.createProduct(command.getProductId(), command.getProductName(), command.getProductionPerHectare(), command.getInitialPrice());
+        Product product = command.getProductType().createProduct(command.getProductId(), command.getProductName(), command.getProductionPerHectare(), command.getInitialPricePerKilogram());
 
         productRepository.addProduct(product);
     }
@@ -31,7 +31,7 @@ public class ProductUseCase
             throw new IllegalArgumentException(String.format("the product: %s, doesnt exist", command.getProductId()));
 
         Product product = maybeProduct.get();
-        product.addPriceFor(command.getPrice().getAmount(), command.getDay());
+        product.addMarketPrice(command.getPricePerKilogram().getAmount(), command.getDay());
 
         productRepository.updateProduct(product);
     }

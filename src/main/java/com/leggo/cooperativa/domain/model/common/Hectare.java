@@ -22,18 +22,9 @@ public class Hectare
         return new Hectare(this.amount + other.amount);
     }
 
-    public Hectare minus(Hectare other)
-    {
-        return new Hectare(this.amount - other.amount);
-    }
-
     public boolean isGreater(Hectare other)
     {
         return this.getAmount() > other.getAmount();
     }
 
-    public boolean isZero()
-    {
-        return amount == 0f;
-    }
 }

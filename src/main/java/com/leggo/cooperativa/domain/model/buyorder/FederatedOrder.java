@@ -1,6 +1,6 @@
 package com.leggo.cooperativa.domain.model.buyorder;
 
-import com.leggo.cooperativa.domain.model.common.Hectare;
+import com.leggo.cooperativa.domain.model.common.Kilograms;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
 import com.leggo.cooperativa.domain.model.product.ProductId;
@@ -19,7 +19,7 @@ public class FederatedOrder implements BuyOrder
     private final Set<ProducerId> producerIds;
     private final ProductId productId;
     private final LocalDateTime soldTime;
-    private final Hectare hectares;
+    private final Kilograms kilograms;
 
     public boolean containsTheProducer(ProducerId producerId)
     {

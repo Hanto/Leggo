@@ -4,11 +4,14 @@ import com.leggo.cooperativa.domain.model.buyorder.BuyOrderId;
 import com.leggo.cooperativa.domain.model.buyorder.FederatedOrder;
 import com.leggo.cooperativa.domain.model.buyorder.NonFederatedOrder;
 import com.leggo.cooperativa.domain.model.common.Hectare;
+import com.leggo.cooperativa.domain.model.common.Kilograms;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.Producer;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
+import com.leggo.cooperativa.domain.model.product.Product;
 import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.domain.repositories.ProducerRepository;
+import com.leggo.cooperativa.domain.repositories.ProductRepository;
 import com.leggo.cooperativa.domain.repositories.SellerRepository;
 import lombok.AllArgsConstructor;
 
@@ -22,16 +25,19 @@ import static java.lang.String.format;
 @AllArgsConstructor
 public class BuyOrderUSeCase
 {
+    private final ProductRepository productRepository;
     private final ProducerRepository producerRepository;
     private final SellerRepository sellerRepository;
     private final BuyOrderValidator validator;
 
     public void createFederatedOrder(CreatedFederatedOrderCommand command)
     {
-        Hectare hectares = getTotalHectares(command.getProducersIds(), command.getYear(), command.getProductId());
+        Set<Producer>producers = retrieveProducers(command.getProducersIds());
+        Product product = retriveProduct(command.getProductId());
+        Kilograms kilograms = getTotalKilograms(producers, command.getYear(), product);
 
         FederatedOrder order = new FederatedOrder(
-            new BuyOrderId(), command.getYear(), command.getProducersIds(), command.getProductId(), LocalDateTime.now(), hectares);
+            new BuyOrderId(), command.getYear(), command.getProducersIds(), command.getProductId(), LocalDateTime.now(), kilograms);
 
         validator.validateFederateOrder(order);
         sellerRepository.addFederatedSeller(order);
@@ -39,10 +45,12 @@ public class BuyOrderUSeCase
 
     public void createNonFederatedOrder(CreateNonFederatedOrderCommand command)
     {
-        Hectare hectares = getTotalHectares(command.getProducerId(), command.getYear(), command.getProductId());
+        Producer producer = retrieveProducer(command.getProducerId());
+        Product product = retriveProduct(command.getProductId());
+        Kilograms kilograms = getTotalKilograms(producer, command.getYear(), product);
 
         NonFederatedOrder order = new NonFederatedOrder(
-            new BuyOrderId(), command.getYear(), command.getProducerId(), command.getProductId(), LocalDateTime.now(), hectares);
+            new BuyOrderId(), command.getYear(), command.getProducerId(), command.getProductId(), LocalDateTime.now(), kilograms);
 
         validator.validateNonFederateOrder(order);
         sellerRepository.addNonFederatedSeller(order);
@@ -53,27 +61,33 @@ public class BuyOrderUSeCase
         sellerRepository.setMaxHectaresForSmallProducer(year, hectare);
     }
 
-    // HECTARES
+    // KILOGRAMS
     //--------------------------------------------------------------------------------------------------------
 
-    private Hectare getTotalHectares(Collection<ProducerId>producersIds, Year year, ProductId productId)
+    private Kilograms getTotalKilograms(Collection<Producer>producers, Year year, Product product)
     {
-        Set<Producer>producers = retrieveProducers(producersIds);
-
-        return producers.stream()
-            .map(producer -> producer.getTotalHectaresFor(year, productId))
+        Hectare hectares = producers.stream()
+            .map(producer -> producer.getTotalHectaresFor(year, product.getProductId()))
             .reduce(Hectare.ofZero(), Hectare::sum);
+
+        return new Kilograms(hectares.getAmount() * product.getGetTonsPerHectare());
     }
 
-    public Hectare getTotalHectares(ProducerId producerId, Year year, ProductId productId)
+    public Kilograms getTotalKilograms(Producer producer, Year year, Product product)
     {
-        Producer producer = retrieveProducer(producerId);
+        Hectare hectares = producer.getTotalHectaresFor(year, product.getProductId());
 
-        return producer.getTotalHectaresFor(year, productId);
+        return new Kilograms(hectares.getAmount() * product.getGetTonsPerHectare());
     }
 
     // HELPER
     //--------------------------------------------------------------------------------------------------------
+
+    private Product retriveProduct(ProductId productId)
+    {
+        return productRepository.findProductById(productId)
+            .orElseThrow(() -> new IllegalArgumentException(format("the product: %s, doesnt exist", productId)) );
+    }
 
     private Producer retrieveProducer(ProducerId producerId)
     {

@@ -14,7 +14,7 @@ import com.leggo.cooperativa.application.product.ProductUseCase;
 import com.leggo.cooperativa.domain.model.common.Hectare;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
-import com.leggo.cooperativa.domain.model.product.Price;
+import com.leggo.cooperativa.domain.model.product.PricePerKilogram;
 import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.infrastructure.repositories.InMemoryDatabase;
 import org.junit.jupiter.api.Test;
@@ -24,6 +24,8 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+
+import static com.leggo.cooperativa.domain.model.product.ProductType.PERISHABLE;
 
 class ApplicationIT
 {
@@ -36,13 +38,13 @@ class ApplicationIT
     @Test
     public void pim()
     {
-        CreateProductCommand createNaranja = new CreateProductCommand(new ProductId("NARANJA"), "naranja", 200f, new Price(new BigDecimal("1.50")));
-        CreateProductCommand createLimon = new CreateProductCommand(new ProductId("LIMON"), "limon", 300f, new Price(new BigDecimal("2.50")));
+        CreateProductCommand createNaranja = new CreateProductCommand(new ProductId("NARANJA"), "naranja", 200f, new PricePerKilogram(new BigDecimal("1.50")), PERISHABLE);
+        CreateProductCommand createLimon = new CreateProductCommand(new ProductId("LIMON"), "limon", 300f, new PricePerKilogram(new BigDecimal("2.50")), PERISHABLE);
 
         productUseCase.createProduct(createNaranja);
         productUseCase.createProduct(createLimon);
 
-        AddPriceCommand addPriceCommand = new AddPriceCommand(new ProductId("NARANJA"), new Price(new BigDecimal("1.50")), LocalDate.now());
+        AddPriceCommand addPriceCommand = new AddPriceCommand(new ProductId("NARANJA"), new PricePerKilogram(new BigDecimal("1.50")), LocalDate.now());
         productUseCase.addPriceForProduct(addPriceCommand);
 
         CreateProducerCommand createPepito = new CreateProducerCommand(new ProducerId("PEPITO"), "pepito");

@@ -1,6 +1,6 @@
 package com.leggo.cooperativa.domain.model.buyorder;
 
-import com.leggo.cooperativa.domain.model.common.Hectare;
+import com.leggo.cooperativa.domain.model.common.Kilograms;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.product.ProductId;
 
@@ -12,5 +12,5 @@ public interface BuyOrder
     Year getYear();
     ProductId getProductId();
     LocalDateTime getSoldTime();
-    Hectare getHectares();
+    Kilograms getKilograms();
 }

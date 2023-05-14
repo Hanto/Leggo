@@ -6,9 +6,10 @@ import com.leggo.cooperativa.application.producer.ProducerUseCase;
 import com.leggo.cooperativa.application.product.ProductUseCase;
 import com.leggo.cooperativa.infrastructure.repositories.InMemoryDatabase;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@org.springframework.context.annotation.Configuration
-public class Configuration
+@Configuration
+public class BeanConfiguration
 {
     @Bean
     public InMemoryDatabase database()
@@ -25,7 +26,7 @@ public class Configuration
     @Bean
     public BuyOrderUSeCase buyOrderUSeCase(InMemoryDatabase database, BuyOrderValidator validator)
     {
-        return new BuyOrderUSeCase(database, database, validator);
+        return new BuyOrderUSeCase(database, database, database, validator);
     }
 
     @Bean

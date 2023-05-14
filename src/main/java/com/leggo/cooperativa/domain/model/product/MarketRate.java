@@ -10,20 +10,20 @@ import java.util.TreeMap;
 @RequiredArgsConstructor @ToString
 public class MarketRate
 {
-    private final TreeMap<LocalDate, Price> pricesByDay = new TreeMap<>();
-    private final Price initialPrice;
+    private final TreeMap<LocalDate, PricePerKilogram> pricesByDay = new TreeMap<>();
+    private final PricePerKilogram initialPricePerKilogram;
 
-    public void addOrReplacePrice(Price price, LocalDate day)
+    public void addOrReplacePrice(PricePerKilogram pricePerKilogram, LocalDate day)
     {
-        pricesByDay.put(day, price);
+        pricesByDay.put(day, pricePerKilogram);
     }
 
-    public Price lastPriceFor(LocalDate day)
+    public PricePerKilogram lastPriceFor(LocalDate day)
     {
-        Map.Entry<LocalDate, Price> dailyPriceEntry = pricesByDay.floorEntry(day);
+        Map.Entry<LocalDate, PricePerKilogram> dailyPriceEntry = pricesByDay.floorEntry(day);
 
         if (dailyPriceEntry == null)
-            return initialPrice;
+            return initialPricePerKilogram;
 
         return dailyPriceEntry.getValue();
     }

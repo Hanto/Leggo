@@ -25,7 +25,7 @@ public class ProductController
         productUseCase.createProduct(command);
     }
 
-    @PostMapping("/product/price")
+    @PostMapping("/product/pricePerKilogram")
     public void addPrice(@RequestBody AddPriceRequest request)
     {
         AddPriceCommand command = new AddPriceCommand(request);

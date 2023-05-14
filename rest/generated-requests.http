@@ -8,7 +8,8 @@ Content-Type: application/json
   "productId": "NARANJA",
   "productName": "naranja",
   "productionPerHectare": 100,
-  "initialPrice": "2.4"
+  "initialPricePerKilogram": "2.4",
+  "productType": "PERISHABLE"
 }
 
 ###
@@ -19,15 +20,16 @@ Content-Type: application/json
   "productId": "LIMON",
   "productName": "limon",
   "productionPerHectare": 200,
-  "initialPrice": "3.5"
+  "initialPricePerKilogram": "3.5",
+  "productType": "NOT_PERISHABLE"
 }
 ###
-POST http://localhost:8080/api/product/price
+POST http://localhost:8080/api/product/pricePerKilogram
 Content-Type: application/json
 
 {
   "productId": "NARANJA",
-  "price": "3.0",
+  "pricePerKilogram": "3.0",
   "day": "2023-10-13"
 }
 ###
