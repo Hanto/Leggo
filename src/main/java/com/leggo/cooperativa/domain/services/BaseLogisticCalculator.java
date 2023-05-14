@@ -7,14 +7,14 @@ import com.leggo.cooperativa.domain.model.logistics.PricePerKilogramAndKilometer
 import com.leggo.cooperativa.domain.model.logistics.PricePerKilometer;
 import com.leggo.cooperativa.domain.model.product.PricePerKilogram;
 import com.leggo.cooperativa.domain.model.product.Product;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@AllArgsConstructor
+@Builder
 public class BaseLogisticCalculator implements LogisticCalculator
 {
     private final PricePerKilogramAndKilometer smallLogisticPricePerKilogramAndKilometer;
@@ -57,10 +57,11 @@ public class BaseLogisticCalculator implements LogisticCalculator
     {
         double numberOfTrips = biglogisticUsesMultipleTrips ? distance.divide(biglogisticsMaxDistance) : 1d;
 
-        Price pricePerTrip = pricePerKilogram.multiply(quantity).multiply(bigLogisticPriceCut).multiply(numberOfTrips);
+        Price pricePerTrip = pricePerKilogram.multiply(quantity).multiply(bigLogisticPriceCut);
+        Price pricePerAllTrips = pricePerTrip.multiply(numberOfTrips);
         Price priceForDistance = pricePerKilometer.multiply(distance);
 
-        return pricePerTrip.add(priceForDistance);
+        return pricePerAllTrips.add(priceForDistance);
     }
 
     private Price smallLogisticCost(PricePerKilogramAndKilometer pricePerKilogramAndKilometer, Kilogram quantity, Kilometer distance)
