@@ -41,7 +41,7 @@ public class BuyOrderValidator
         if (hasBigSellers(order.getYear(), producers))
             throw new IllegalArgumentException(format("One of the producers is a big seller %s", order));
 
-        if (order.getKilograms().isZero())
+        if (order.getKilograms().isZeroOrLess())
             throw new IllegalArgumentException(format("Cannot create an order when this producer has no harvest for this product: %s", order));
     }
 
@@ -61,7 +61,7 @@ public class BuyOrderValidator
         if (isBigSeller(order.getYear(), producer) && isAlreadySellingMoreThanFiveProducts(order.getYear(), order.getProducerId()))
             throw new IllegalArgumentException(format("this small seller is already selling more than 5 products: %s", order));
 
-        if (order.getKilograms().isZero())
+        if (order.getKilograms().isZeroOrLess())
             throw new IllegalArgumentException(format("Cannot create an order when this producer has no harvest for this product: %s", order));
     }
 

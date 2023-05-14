@@ -4,7 +4,7 @@ import com.leggo.cooperativa.domain.model.buyorder.BuyOrderId;
 import com.leggo.cooperativa.domain.model.buyorder.FederatedOrder;
 import com.leggo.cooperativa.domain.model.buyorder.NonFederatedOrder;
 import com.leggo.cooperativa.domain.model.common.Hectare;
-import com.leggo.cooperativa.domain.model.common.Kilograms;
+import com.leggo.cooperativa.domain.model.common.Kilogram;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.Producer;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
@@ -34,7 +34,7 @@ public class BuyOrderUSeCase
     {
         Set<Producer>producers = retrieveProducers(command.getProducersIds());
         Product product = retriveProduct(command.getProductId());
-        Kilograms kilograms = getTotalKilograms(producers, command.getYear(), product);
+        Kilogram kilograms = getTotalKilograms(producers, command.getYear(), product);
 
         FederatedOrder order = new FederatedOrder(
             new BuyOrderId(), command.getYear(), command.getProducersIds(), command.getProductId(), LocalDateTime.now(), kilograms);
@@ -47,7 +47,7 @@ public class BuyOrderUSeCase
     {
         Producer producer = retrieveProducer(command.getProducerId());
         Product product = retriveProduct(command.getProductId());
-        Kilograms kilograms = getTotalKilograms(producer, command.getYear(), product);
+        Kilogram kilograms = getTotalKilograms(producer, command.getYear(), product);
 
         NonFederatedOrder order = new NonFederatedOrder(
             new BuyOrderId(), command.getYear(), command.getProducerId(), command.getProductId(), LocalDateTime.now(), kilograms);
@@ -64,20 +64,20 @@ public class BuyOrderUSeCase
     // KILOGRAMS
     //--------------------------------------------------------------------------------------------------------
 
-    private Kilograms getTotalKilograms(Collection<Producer>producers, Year year, Product product)
+    private Kilogram getTotalKilograms(Collection<Producer>producers, Year year, Product product)
     {
         Hectare hectares = producers.stream()
             .map(producer -> producer.getTotalHectaresFor(year, product.getProductId()))
             .reduce(Hectare.ofZero(), Hectare::sum);
 
-        return new Kilograms(hectares.getAmount() * product.getGetTonsPerHectare());
+        return new Kilogram(hectares.getAmount() * product.getGetTonsPerHectare());
     }
 
-    public Kilograms getTotalKilograms(Producer producer, Year year, Product product)
+    public Kilogram getTotalKilograms(Producer producer, Year year, Product product)
     {
         Hectare hectares = producer.getTotalHectaresFor(year, product.getProductId());
 
-        return new Kilograms(hectares.getAmount() * product.getGetTonsPerHectare());
+        return new Kilogram(hectares.getAmount() * product.getGetTonsPerHectare());
     }
 
     // HELPER

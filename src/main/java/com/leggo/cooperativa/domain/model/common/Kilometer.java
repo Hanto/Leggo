@@ -5,18 +5,35 @@ import lombok.Data;
 @Data
 public class Kilometer
 {
-    public final float amount;
+    public final double amount;
 
-    public static Kilometer of(float amount)
+    public static Kilometer of(double amount)
     {
-        if (amount < 0)
-            throw new IllegalArgumentException("Distances cannot be negative");
-
         return new Kilometer(amount);
     }
 
-    public boolean isZero()
+    public static Kilometer ofZero()
+    {
+        return new Kilometer(0f);
+    }
+
+    public boolean isZeroOrLess()
     {
         return amount <= 0;
+    }
+
+    public Kilometer minus(Kilometer other)
+    {
+        return Kilometer.of(amount - other.amount);
+    }
+
+    public Kilometer modulus(Kilometer other)
+    {
+        return Kilometer.of(amount % other.amount);
+    }
+
+    public double divide(Kilometer other)
+    {
+        return (amount / other.amount);
     }
 }

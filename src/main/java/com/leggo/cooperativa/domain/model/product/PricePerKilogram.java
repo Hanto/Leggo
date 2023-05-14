@@ -1,15 +1,14 @@
 package com.leggo.cooperativa.domain.model.product;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import com.leggo.cooperativa.domain.model.common.Kilogram;
+import com.leggo.cooperativa.domain.model.common.Price;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
-@ToString @EqualsAndHashCode
+@Data
 public class PricePerKilogram
 {
-    @Getter
     private final BigDecimal amount;
 
     public static PricePerKilogram of(BigDecimal bigDecimal)
@@ -22,16 +21,8 @@ public class PricePerKilogram
         return new PricePerKilogram(new BigDecimal(string));
     }
 
-    public static PricePerKilogram ofZero()
+    public Price multiply(Kilogram kilograms)
     {
-        return new PricePerKilogram(BigDecimal.ZERO);
-    }
-
-    public PricePerKilogram(BigDecimal amount)
-    {   this.amount = amount; }
-
-    public PricePerKilogram multiply(Float number)
-    {
-        return PricePerKilogram.of(this.amount.multiply(BigDecimal.valueOf(number)));
+        return Price.of(this.amount.multiply(BigDecimal.valueOf(kilograms.getAmount())));
     }
 }
