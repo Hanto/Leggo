@@ -16,11 +16,11 @@ public class PerishableLogistics implements LogisticCalculator
     private final BaseLogisticCalculator calc = BaseLogisticCalculator.builder()
         .smallLogisticPricePerKilogramAndKilometer(PricePerKilogramAndKilometer.of("0.01"))
         .smallLogisticMaxDistance(Kilometer.of(100))
-        .biglogisticsMaxDistance(Kilometer.of(50))
+        .biglogisticsMaxDistance(Kilometer.of(100))
         .bigLogisticPriceCut(0.5d)
-        .biglogisticPricePerKilometer(PricePerKilometer.of("0.05"))
+        .biglogisticPricePerKilometer(PricePerKilometer.of("5.00"))
         .biglogisticTruckCapacity(Kilogram.of(1000f))
-        .biglogisticUsesMultipleTrips(false).build();
+        .biglogisticUsesMultipleTrips(true).build();
 
     @Override
     public Price calculateLogistic(Product product, Kilometer distance, Kilogram quantity, LocalDate day)

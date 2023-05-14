@@ -43,6 +43,6 @@ class AllProducsLogisticCalculatorTest
         val price = underTest.calculateLogistic(
             product, Kilometer.of(180.0), Kilogram.of(2000.0), LocalDate.now())
 
-        assertThat(price.amount).isEqualByComparingTo(BigDecimal("2110"))
+        assertThat(price.amount).isEqualByComparingTo(BigDecimal("3100"))
     }
 }
