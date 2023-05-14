@@ -2,6 +2,7 @@ package com.leggo.cooperativa.domain.services
 
 import com.leggo.cooperativa.domain.model.common.Kilogram
 import com.leggo.cooperativa.domain.model.common.Kilometer
+import com.leggo.cooperativa.domain.model.product.KilogramsPerHectare
 import com.leggo.cooperativa.domain.model.product.NonPerishableProduct
 import com.leggo.cooperativa.domain.model.product.PerishableProduct
 import com.leggo.cooperativa.domain.model.product.PricePerKilogram
@@ -26,7 +27,7 @@ class AllProducsLogisticCalculatorTest
     fun testNotPerishable()
     {
         val product = NOT_PERISHABLE.createProduct(
-            ProductId("ACEITE"), "aceite", 2000f, PricePerKilogram.of("0.50"))
+            ProductId("ACEITE"), "aceite", KilogramsPerHectare(2000.0), PricePerKilogram.of("0.50"))
 
         val price = underTest.calculateLogistic(
             product, Kilometer.of(180.0), Kilogram.of(2000.0), LocalDate.now())
@@ -38,7 +39,7 @@ class AllProducsLogisticCalculatorTest
     fun testPerishable()
     {
         val product = PERISHABLE.createProduct(
-            ProductId("ACEITE"), "aceite", 2000f, PricePerKilogram.of("0.50"))
+            ProductId("ACEITE"), "aceite", KilogramsPerHectare(2000.0), PricePerKilogram.of("0.50"))
 
         val price = underTest.calculateLogistic(
             product, Kilometer.of(180.0), Kilogram.of(2000.0), LocalDate.now())

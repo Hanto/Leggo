@@ -1,5 +1,6 @@
 package com.leggo.cooperativa.application.product;
 
+import com.leggo.cooperativa.domain.model.product.KilogramsPerHectare;
 import com.leggo.cooperativa.domain.model.product.PricePerKilogram;
 import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.domain.model.product.ProductType;
@@ -15,7 +16,7 @@ public class CreateProductCommand
 {
     private final ProductId productId;
     private final String productName;
-    private final float productionPerHectare;
+    private final KilogramsPerHectare kilogramsPerHectare;
     private final PricePerKilogram initialPricePerKilogram;
     private final ProductType productType;
 
@@ -23,7 +24,7 @@ public class CreateProductCommand
     {
         this.productId = new ProductId(request.getProductId());
         this.productName = request.getProductName();
-        this.productionPerHectare = request.getProductionPerHectare();
+        this.kilogramsPerHectare = new KilogramsPerHectare(request.getProductionPerHectare());
         this.initialPricePerKilogram = new PricePerKilogram(new BigDecimal(request.getInitialPricePerKilogram()));
         this.productType = productTypeFrom(request.getProductType());
     }

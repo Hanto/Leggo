@@ -2,8 +2,8 @@ package com.leggo.cooperativa.domain.model.product;
 
 public class PerishableProduct extends Product
 {
-    public PerishableProduct(ProductId productId, String name, float productionPerHectare, MarketRate marketRates)
+    public PerishableProduct(ProductId productId, String name, KilogramsPerHectare kilogramsPerHectare, MarketRate marketRates)
     {
-        super(productId, name, productionPerHectare, marketRates);
+        super(productId, name, kilogramsPerHectare, marketRates);
     }
 }

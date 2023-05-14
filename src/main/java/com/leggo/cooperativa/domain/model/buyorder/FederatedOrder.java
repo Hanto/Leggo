@@ -16,13 +16,28 @@ public class FederatedOrder implements BuyOrder
 {
     private final BuyOrderId buyOrderId;
     private final Year year;
-    private final Set<ProducerId> producerIds;
+    private final Set<Contribution> contributors;
     private final ProductId productId;
     private final LocalDateTime soldTime;
-    private final Kilogram kilograms;
 
     public boolean containsTheProducer(ProducerId producerId)
     {
-        return producerIds.contains(producerId);
+        return contributors.stream()
+            .map(Contribution::getProducerId)
+            .anyMatch(producerId::equals);
+    }
+
+    public Kilogram getContributionOf(ProducerId producerId)
+    {
+        return contributors.stream()
+            .filter(contribution -> contribution.getProducerId().equals(producerId))
+            .map(Contribution::getKilograms).findFirst().orElse(Kilogram.of(0));
+    }
+
+    public Kilogram getTotalKilograms()
+    {
+        return contributors.stream()
+            .map(Contribution::getKilograms)
+            .reduce(Kilogram.of(0), Kilogram::sum);
     }
 }

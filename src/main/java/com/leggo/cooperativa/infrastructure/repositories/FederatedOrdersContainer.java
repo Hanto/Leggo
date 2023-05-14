@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class FederatedOrdersContainer
 {
-    Map<Year, Map<ProductId, FederatedOrder>> rootMap = new HashMap<>();
+    private final Map<Year, Map<ProductId, FederatedOrder>> rootMap = new HashMap<>();
 
     public void add(FederatedOrder seller)
     {

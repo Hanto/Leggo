@@ -7,7 +7,7 @@ public class CreateProductRequest
 {
     private final String productId;
     private final String productName;
-    private final float productionPerHectare;
+    private final double productionPerHectare;
     private final String initialPricePerKilogram;
     private final String productType;
 }

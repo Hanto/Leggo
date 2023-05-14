@@ -12,5 +12,5 @@ public interface BuyOrder
     Year getYear();
     ProductId getProductId();
     LocalDateTime getSoldTime();
-    Kilogram getKilograms();
+    Kilogram getTotalKilograms();
 }

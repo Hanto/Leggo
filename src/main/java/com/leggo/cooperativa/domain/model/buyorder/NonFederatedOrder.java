@@ -2,7 +2,6 @@ package com.leggo.cooperativa.domain.model.buyorder;
 
 import com.leggo.cooperativa.domain.model.common.Kilogram;
 import com.leggo.cooperativa.domain.model.common.Year;
-import com.leggo.cooperativa.domain.model.producer.ProducerId;
 import com.leggo.cooperativa.domain.model.product.ProductId;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +14,12 @@ public class NonFederatedOrder implements BuyOrder
 {
     private final BuyOrderId buyOrderId;
     private final Year year;
-    private final ProducerId producerId;
+    private final Contribution contributor;
     private final ProductId productId;
     private final LocalDateTime soldTime;
-    private final Kilogram kilograms;
+
+    public Kilogram getTotalKilograms()
+    {
+        return contributor.getKilograms();
+    }
 }

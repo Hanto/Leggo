@@ -1,10 +1,10 @@
 package com.leggo.cooperativa.application.buyorder;
 
 import com.leggo.cooperativa.domain.model.buyorder.BuyOrderId;
+import com.leggo.cooperativa.domain.model.buyorder.Contribution;
 import com.leggo.cooperativa.domain.model.buyorder.FederatedOrder;
 import com.leggo.cooperativa.domain.model.buyorder.NonFederatedOrder;
 import com.leggo.cooperativa.domain.model.common.Hectare;
-import com.leggo.cooperativa.domain.model.common.Kilogram;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.Producer;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
@@ -34,10 +34,10 @@ public class BuyOrderUSeCase
     {
         Set<Producer>producers = retrieveProducers(command.getProducersIds());
         Product product = retriveProduct(command.getProductId());
-        Kilogram kilograms = getTotalKilograms(producers, command.getYear(), product);
+        Set<Contribution> contributions = getContributions(producers, command.getYear(), product);
 
         FederatedOrder order = new FederatedOrder(
-            new BuyOrderId(), command.getYear(), command.getProducersIds(), command.getProductId(), LocalDateTime.now(), kilograms);
+            new BuyOrderId(), command.getYear(), contributions, command.getProductId(), LocalDateTime.now());
 
         validator.validateFederateOrder(order);
         sellerRepository.addFederatedSeller(order);
@@ -47,10 +47,10 @@ public class BuyOrderUSeCase
     {
         Producer producer = retrieveProducer(command.getProducerId());
         Product product = retriveProduct(command.getProductId());
-        Kilogram kilograms = getTotalKilograms(producer, command.getYear(), product);
+        Contribution contribution = getContribution(producer, command.getYear(), product);
 
         NonFederatedOrder order = new NonFederatedOrder(
-            new BuyOrderId(), command.getYear(), command.getProducerId(), command.getProductId(), LocalDateTime.now(), kilograms);
+            new BuyOrderId(), command.getYear(), contribution, command.getProductId(), LocalDateTime.now());
 
         validator.validateNonFederateOrder(order);
         sellerRepository.addNonFederatedSeller(order);
@@ -64,20 +64,17 @@ public class BuyOrderUSeCase
     // KILOGRAMS
     //--------------------------------------------------------------------------------------------------------
 
-    private Kilogram getTotalKilograms(Collection<Producer>producers, Year year, Product product)
+    private Set<Contribution> getContributions(Collection<Producer>producers, Year year, Product product)
     {
-        Hectare hectares = producers.stream()
-            .map(producer -> producer.getTotalHectaresFor(year, product.getProductId()))
-            .reduce(Hectare.ofZero(), Hectare::sum);
-
-        return new Kilogram(hectares.getAmount() * product.getGetTonsPerHectare());
+        return producers.stream()
+            .map(producer -> getContribution(producer, year, product)).collect(Collectors.toSet());
     }
 
-    public Kilogram getTotalKilograms(Producer producer, Year year, Product product)
+    public Contribution getContribution(Producer producer, Year year, Product product)
     {
         Hectare hectares = producer.getTotalHectaresFor(year, product.getProductId());
 
-        return new Kilogram(hectares.getAmount() * product.getGetTonsPerHectare());
+        return new Contribution(producer.getProducerId(), product.getKilogramsPerHectare().multiply(hectares));
     }
 
     // HELPER

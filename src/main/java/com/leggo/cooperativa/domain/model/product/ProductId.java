@@ -6,4 +6,9 @@ import lombok.Data;
 public class ProductId
 {
     private final String id;
+
+    public static ProductId of(String id)
+    {
+        return new ProductId(id);
+    }
 }

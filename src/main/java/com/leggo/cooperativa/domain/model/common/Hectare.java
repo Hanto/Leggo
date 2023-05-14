@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class Hectare
 {
-    private final float amount;
+    private final double amount;
 
-    public static Hectare of(float amount)
+    public static Hectare of(double amount)
     {
         return new Hectare(amount);
     }

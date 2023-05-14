@@ -6,4 +6,9 @@ import lombok.Data;
 public class ProducerId
 {
     private final String id;
+
+    public static ProducerId of(String id)
+    {
+        return new ProducerId(id);
+    }
 }

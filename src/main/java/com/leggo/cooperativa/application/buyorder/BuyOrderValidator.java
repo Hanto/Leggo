@@ -1,5 +1,6 @@
 package com.leggo.cooperativa.application.buyorder;
 
+import com.leggo.cooperativa.domain.model.buyorder.Contribution;
 import com.leggo.cooperativa.domain.model.buyorder.FederatedOrder;
 import com.leggo.cooperativa.domain.model.buyorder.NonFederatedOrder;
 import com.leggo.cooperativa.domain.model.common.Hectare;
@@ -30,7 +31,7 @@ public class BuyOrderValidator
 
     public void validateFederateOrder(FederatedOrder order)
     {
-        Set<Producer>producers = retrieveProducers(order.getProducerIds());
+        Set<Producer>producers = retrieveProducers(order.getContributors());
 
         if (productDoesntExist(order.getProductId()))
             throw new IllegalArgumentException(format("the product doesnt exist: %s", order));
@@ -41,27 +42,27 @@ public class BuyOrderValidator
         if (hasBigSellers(order.getYear(), producers))
             throw new IllegalArgumentException(format("One of the producers is a big seller %s", order));
 
-        if (order.getKilograms().isZeroOrLess())
+        if (order.getTotalKilograms().isZeroOrLess())
             throw new IllegalArgumentException(format("Cannot create an order when this producer has no harvest for this product: %s", order));
     }
 
     public void validateNonFederateOrder(NonFederatedOrder order)
     {
-        Producer producer = retrieveProducer(order.getProducerId());
+        Producer producer = retrieveProducer(order.getContributor().getProducerId());
 
         if (productDoesntExist(order.getProductId()))
             throw new IllegalArgumentException(format("the product doesnt exist: %s", order));
 
-        if (isAlreadySoldAsFederatedSeller(order.getYear(), order.getProductId(), order.getProducerId()))
+        if (isAlreadySoldAsFederatedSeller(order.getYear(), order.getProductId(), producer.getProducerId()))
             throw new IllegalArgumentException(format("This seller is already selling this product as FederatedSeller: %s", order));
 
-        if (isAlreadySoldAsNonFederatedSeller(order.getYear(), order.getProductId(), order.getProducerId()))
+        if (isAlreadySoldAsNonFederatedSeller(order.getYear(), order.getProductId(), producer.getProducerId()))
             throw new IllegalArgumentException(format("this seller is already selling this product: %s", order));
 
-        if (isBigSeller(order.getYear(), producer) && isAlreadySellingMoreThanFiveProducts(order.getYear(), order.getProducerId()))
+        if (isBigSeller(order.getYear(), producer) && isAlreadySellingMoreThanFiveProducts(order.getYear(), producer.getProducerId()))
             throw new IllegalArgumentException(format("this small seller is already selling more than 5 products: %s", order));
 
-        if (order.getKilograms().isZeroOrLess())
+        if (order.getTotalKilograms().isZeroOrLess())
             throw new IllegalArgumentException(format("Cannot create an order when this producer has no harvest for this product: %s", order));
     }
 
@@ -76,20 +77,20 @@ public class BuyOrderValidator
 
     private boolean isAlreadySoldAsFederatedSeller(Year year, ProductId productId, ProducerId producer)
     {
-        return sellerRepository.findFederatedSellerBy(year, productId)
+        return sellerRepository.findFederatedOrderBy(year, productId)
             .map(federatedSeller -> federatedSeller.containsTheProducer(producer))
             .orElse(false);
     }
 
     private boolean isAlreadySoldAsNonFederatedSeller(Year year, ProductId productId, ProducerId producerId)
     {
-        return sellerRepository.findNonFederatedSellerBy(year, productId, producerId)
+        return sellerRepository.findNonFederatedOrderBy(year, productId, producerId)
             .isPresent();
     }
 
     private boolean isAlreadySoldByANonFederatedSeller(Year year, ProductId productId)
     {
-        return sellerRepository.findFederatedSellerBy(year, productId)
+        return sellerRepository.findFederatedOrderBy(year, productId)
             .isPresent();
     }
 
@@ -125,9 +126,10 @@ public class BuyOrderValidator
             .orElseThrow(() -> new IllegalArgumentException(format("the producer: %s, doesnt exist", producerId)) );
     }
 
-    private Set<Producer> retrieveProducers(Collection<ProducerId>producerIds)
+    private Set<Producer> retrieveProducers(Collection<Contribution>producerIds)
     {
         return producerIds.stream()
+            .map(Contribution::getProducerId)
             .map(this::retrieveProducer)
             .collect(Collectors.toUnmodifiableSet());
     }

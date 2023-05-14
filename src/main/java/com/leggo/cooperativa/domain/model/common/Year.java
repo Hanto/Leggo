@@ -7,6 +7,11 @@ public class Year implements Comparable<Year>
 {
     private final Integer year;
 
+    public static Year of(Integer year)
+    {
+        return new Year(year);
+    }
+
     @Override
     public int compareTo(Year o)
     {

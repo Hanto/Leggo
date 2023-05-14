@@ -13,7 +13,7 @@ class ProductTest
     @Test
     public void whenLastPriceFor()
     {
-        Product product = PERISHABLE.createProduct(new ProductId("1"), "Manzana", 200f, new PricePerKilogram(price("0.40")));
+        Product product = PERISHABLE.createProduct(new ProductId("1"), "Manzana", new KilogramsPerHectare(200d), new PricePerKilogram(price("0.40")));
         product.addMarketPrice(price("1.40"), LocalDate.now().minusDays(1));
 
         PricePerKilogram todaysPricePerKilogram = product.lastMarketPrice(LocalDate.now());

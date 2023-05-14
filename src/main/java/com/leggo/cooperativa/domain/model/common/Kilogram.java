@@ -37,4 +37,8 @@ public class Kilogram
         return Kilogram.of(this.amount % other.getAmount());
     }
 
+    public Kilogram sum(Kilogram other)
+    {
+        return Kilogram.of(this.amount + other.amount);
+    }
 }
