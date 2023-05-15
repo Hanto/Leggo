@@ -12,6 +12,8 @@ import com.leggo.cooperativa.domain.services.PriceService;
 import com.leggo.cooperativa.domain.services.TaxService;
 import lombok.RequiredArgsConstructor;
 
+import static java.lang.String.format;
+
 @RequiredArgsConstructor
 public class SellOrderUseCase
 {
@@ -26,7 +28,8 @@ public class SellOrderUseCase
         SellOrderProductPriced orderProductPriced = priceService.price(orderDemanded);
         SellOrderLogisticPriced orderLogisticPriced = logistics.calculateLogistic(orderProductPriced);
         SellOrderTaxed orderTaxed = taxService.applyCorrectTax(orderLogisticPriced);
-        return inventory.serveSellOrder(orderTaxed);
+
+        return inventory.enterProductFrom(orderTaxed);
     }
 
     public SellOrder createSellOrderForMajorist(AddSellOrderCommand command)
@@ -38,7 +41,7 @@ public class SellOrderUseCase
     public SellOrder createSellOrderForMinorist(AddSellOrderCommand command)
     {
         if (command.getQuantity().isGreaterOrEqual(MAX_FOR_MINORIST))
-            throw new IllegalArgumentException("Cannot sell more than 100Kg to minorists");
+            throw new IllegalArgumentException(format("Cannot sell more than 100Kg to minorists: %s", command));
 
         return createSellOrder(command);
     }

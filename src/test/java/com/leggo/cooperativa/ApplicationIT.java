@@ -123,9 +123,6 @@ class ApplicationIT
             .build();
 
         SellOrder sellOrder = sellOrderUseCase.createSellOrderForMajorist(addSellOrderCommand);
-
-        System.out.println(inventoryService.totalKilogramsInStock(Year.of(2023), ProductId.of("NARANJA")));
-
         System.out.println(sellOrder);
         System.out.println(sellOrder.getTotalPriceWithTaxes());
     }

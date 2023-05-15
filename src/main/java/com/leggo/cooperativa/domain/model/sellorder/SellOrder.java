@@ -28,7 +28,7 @@ public class SellOrder
     private final Price logisticsPrice;
     private final Tax taxes;
 
-    public Price getTotalPrice()
+    public Price getTotalPriceWithTaxes()
     {
        return productPrice.multiply(quantity)
            .add(logisticsPrice)

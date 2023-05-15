@@ -1,6 +1,8 @@
 package com.leggo.cooperativa.application.producer;
 
 import com.leggo.cooperativa.application.producer.CreateFieldsCommand.FieldDTO;
+import com.leggo.cooperativa.domain.model.common.Hectare;
+import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.Field;
 import com.leggo.cooperativa.domain.model.producer.Producer;
 import com.leggo.cooperativa.domain.model.product.Product;
@@ -43,6 +45,11 @@ public class ProducerUseCase
         producer.createFieldsFor(command.getYear(), fields);
 
         producerRepository.updateProducer(producer);
+    }
+
+    public void setHectareLimitFor(Year year, Hectare hectare)
+    {
+        producerRepository.setMaxHectaresForSmallProducer(year, hectare);
     }
 
     // HELPER

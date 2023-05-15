@@ -101,7 +101,7 @@ public class BuyOrderValidator
 
     private boolean hasBigSellers(Year year, Collection<Producer> producers)
     {
-        Optional<Hectare> maybeHectareLimit = buyOrderRepository.maxHectaresForSmallProducer(year);
+        Optional<Hectare> maybeHectareLimit = producerRepository.maxHectaresForSmallProducer(year);
 
         if (maybeHectareLimit.isEmpty())
             throw new IllegalArgumentException(format("The are no hectare limits for year %s", year));

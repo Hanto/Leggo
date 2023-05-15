@@ -38,9 +38,9 @@ public class BeanConfiguration
     }
 
     @Bean
-    public BuyOrderUSeCase buyOrderUSeCase(InMemoryDatabase database, BuyOrderValidator validator)
+    public BuyOrderUSeCase buyOrderUSeCase(InMemoryDatabase database, BuyOrderValidator validator, InventoryService inventoryService)
     {
-        return new BuyOrderUSeCase(database, database, database, validator);
+        return new BuyOrderUSeCase(database, database, inventoryService, validator);
     }
 
     @Bean

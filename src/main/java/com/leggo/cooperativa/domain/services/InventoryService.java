@@ -19,7 +19,7 @@ public class InventoryService
     private final BuyOrderRepository buyOrderRepository;
     private final SellOrderRepository sellOrderRepository;
 
-    public SellOrder serveSellOrder(SellOrderTaxed orderDemand)
+    public SellOrder enterProductFrom(SellOrderTaxed orderDemand)
     {
         Kilogram kilogramsInInventory = totalKilogramsInStock(orderDemand.getYearOfHarvest(), orderDemand.getProductId());
 
@@ -32,14 +32,27 @@ public class InventoryService
         return sellOrder;
     }
 
-    public Kilogram totalKilogramsInStock(Year year, ProductId productId)
+    public void exitProductFrom(FederatedOrder buyOrder)
+    {
+        buyOrderRepository.addFederatedOrder(buyOrder);
+    }
+
+    public void exitProductFrom(NonFederatedOrder buyOrder)
+    {
+        buyOrderRepository.addNonFederatedOrder(buyOrder);
+    }
+
+    // HELPER
+    //--------------------------------------------------------------------------------------------------------
+
+    private Kilogram totalKilogramsInStock(Year year, ProductId productId)
     {
         Kilogram kilogramsBought = totalKilogramsBought(year, productId);
         Kilogram kilogramsSold = totalKilogramsSold(year, productId);
         return kilogramsBought.minus(kilogramsSold);
     }
 
-    public Kilogram totalKilogramsBought(Year year, ProductId productId)
+    private Kilogram totalKilogramsBought(Year year, ProductId productId)
     {
         Kilogram fromFederatedOrder = buyOrderRepository.findFederatedOrdersBy(year, productId)
             .map(FederatedOrder::getTotalKilograms)
@@ -52,7 +65,7 @@ public class InventoryService
         return fromFederatedOrder.sum(fromNonFederatedOrders);
     }
 
-    public Kilogram totalKilogramsBoughtFrom(Year year, ProductId productId, ProducerId producerId)
+    private Kilogram totalKilogramsBoughtFrom(Year year, ProductId productId, ProducerId producerId)
     {
         Kilogram fromFederatedOrder = buyOrderRepository.findFederatedOrdersBy(year, productId)
             .map(federatedOrder -> federatedOrder.getContributionOf(producerId))
@@ -65,7 +78,7 @@ public class InventoryService
         return fromFederatedOrder.sum(fromNonFederatedOrders);
     }
 
-    public Kilogram totalKilogramsSold(Year year, ProductId productId)
+    private Kilogram totalKilogramsSold(Year year, ProductId productId)
     {
         return sellOrderRepository.findSellOrdersBy(year, productId).stream()
             .map(SellOrder::getQuantity)

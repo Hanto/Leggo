@@ -19,9 +19,9 @@ public class Price
         return new Price(bigDecimal);
     }
 
-    public Price multiply(Double number)
+    public Price multiply(Double factor)
     {
-        return Price.of(amount.multiply(BigDecimal.valueOf(number)));
+        return Price.of(amount.multiply(BigDecimal.valueOf(factor)));
     }
 
     public Price add(Price other)
