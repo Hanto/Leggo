@@ -1,19 +1,25 @@
 package com.leggo.cooperativa.domain.model.product;
 
 import com.leggo.cooperativa.domain.model.common.PricePerKilogram;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.TreeMap;
 
-@RequiredArgsConstructor @ToString @Getter
+@AllArgsConstructor @ToString @Getter
 public class MarketRate
 {
-    private final TreeMap<LocalDate, PricePerKilogram> pricesByDay = new TreeMap<>();
+    private final TreeMap<LocalDate, PricePerKilogram> pricesByDay;
     private final PricePerKilogram initialPricePerKilogram;
+
+    public MarketRate(PricePerKilogram initialPricePerKilogram)
+    {
+        this.initialPricePerKilogram = initialPricePerKilogram;
+        this.pricesByDay = new TreeMap<>();
+    }
 
     public void addOrReplacePrice(PricePerKilogram pricePerKilogram, LocalDate day)
     {

@@ -1,32 +1,38 @@
 package com.leggo.cooperativa;
 
-import com.leggo.cooperativa.infrastructure.repositories.mongodb.ProductEntity;
+import com.leggo.cooperativa.domain.model.common.KilogramsPerHectare;
+import com.leggo.cooperativa.domain.model.common.PricePerKilogram;
+import com.leggo.cooperativa.domain.model.product.MarketRate;
+import com.leggo.cooperativa.domain.model.product.Product;
+import com.leggo.cooperativa.domain.model.product.ProductId;
+import com.leggo.cooperativa.domain.model.product.ProductType;
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.ProductMongo;
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.ProductMongoRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-@Testcontainers
-@SpringBootTest
+@Testcontainers @SpringBootTest
 class MainTests
 {
 	@Container
 	static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:5.0")
 		.withExposedPorts(27017);
 
-	@Autowired private ProductMongo repository;
+	@Autowired private ProductMongo productMongo;
+
+	@Bean
+	public ProductMongoRepository productMongoRepository()
+	{
+		return new ProductMongoRepository(productMongo);
+	}
 
 	@DynamicPropertySource
 	static void setProperties(DynamicPropertyRegistry registry)
@@ -43,20 +49,16 @@ class MainTests
 	@Test
 	public void pim()
 	{
-		Map<LocalDate, BigDecimal>marketRates = new HashMap<>();
-		marketRates.put(LocalDate.now(), new BigDecimal("3.00"));
+		ProductMongoRepository repo = new ProductMongoRepository(productMongo);
 
-		ProductEntity product = ProductEntity.builder()
-			.productId("NARANJAS")
-			.name("naranjas")
-			.kilogramsPerHectare(100d)
-			.marketRates(ProductEntity.MarketRateEntity.builder().pricesByDay(marketRates).initialPricePerKilogram(new BigDecimal("2")).build()).build();
+		Product product = new Product(
+			ProductId.of("NARANJA"), "naranja", KilogramsPerHectare.of(200),
+			new MarketRate(PricePerKilogram.of("2.0")), ProductType.PERISHABLE);
 
-		repository.save(product);
+		repo.addProduct(product);
 
-		Optional<ProductEntity> maybeProductEntity = repository.queryByProductId("NARANJAS");
+		System.out.println(repo.findProductById(product.getProductId()));
 
-		System.out.println(maybeProductEntity);
 	}
 
 }

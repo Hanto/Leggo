@@ -10,12 +10,13 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @ToString @RequiredArgsConstructor
-public abstract class Product
+public class Product
 {
     @Getter private final ProductId productId;
     @Getter private final String name;
     @Getter private final KilogramsPerHectare kilogramsPerHectare;
     @Getter private final MarketRate marketRates;
+    @Getter private final ProductType productType;
 
     public PricePerKilogram lastMarketPrice(LocalDate day)
     {

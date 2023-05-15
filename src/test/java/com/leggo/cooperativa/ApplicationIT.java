@@ -20,10 +20,8 @@ import com.leggo.cooperativa.domain.model.common.Kilometer;
 import com.leggo.cooperativa.domain.model.common.PricePerKilogram;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
-import com.leggo.cooperativa.domain.model.product.NonPerishableProduct;
-import com.leggo.cooperativa.domain.model.product.PerishableProduct;
-import com.leggo.cooperativa.domain.model.product.Product;
 import com.leggo.cooperativa.domain.model.product.ProductId;
+import com.leggo.cooperativa.domain.model.product.ProductType;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrder;
 import com.leggo.cooperativa.domain.services.InventoryService;
 import com.leggo.cooperativa.domain.services.LogisticsService;
@@ -43,6 +41,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import static com.leggo.cooperativa.domain.model.product.ProductType.NOT_PERISHABLE;
 import static com.leggo.cooperativa.domain.model.product.ProductType.PERISHABLE;
 
 class ApplicationIT
@@ -54,10 +53,10 @@ class ApplicationIT
     private final ProductUseCase productUseCase = new ProductUseCase(database);
     private final ProducerUseCase producerUseCase = new ProducerUseCase(database, database);
     private final PriceService priceService = new PriceService(database);
-    private final Map<Class<? extends Product>, LogisticsService>map = new HashMap<>()
+    private final Map<ProductType, LogisticsService>map = new HashMap<>()
     {{
-        put(PerishableProduct.class, new PerishableLogistics());
-        put(NonPerishableProduct.class, new NonPerishableLogistics());
+        put(PERISHABLE, new PerishableLogistics());
+        put(NOT_PERISHABLE, new NonPerishableLogistics());
     }};
     private final LogisticsService logisticsService = new AllProductsLogistics(map, database);
     private final TaxService taxService = new TaxService();

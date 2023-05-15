@@ -5,9 +5,7 @@ import com.leggo.cooperativa.application.buyorder.BuyOrderValidator;
 import com.leggo.cooperativa.application.producer.ProducerUseCase;
 import com.leggo.cooperativa.application.product.ProductUseCase;
 import com.leggo.cooperativa.application.sellorder.SellOrderUseCase;
-import com.leggo.cooperativa.domain.model.product.NonPerishableProduct;
-import com.leggo.cooperativa.domain.model.product.PerishableProduct;
-import com.leggo.cooperativa.domain.model.product.Product;
+import com.leggo.cooperativa.domain.model.product.ProductType;
 import com.leggo.cooperativa.domain.services.InventoryService;
 import com.leggo.cooperativa.domain.services.LogisticsService;
 import com.leggo.cooperativa.domain.services.PriceService;
@@ -21,6 +19,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.leggo.cooperativa.domain.model.product.ProductType.NOT_PERISHABLE;
+import static com.leggo.cooperativa.domain.model.product.ProductType.PERISHABLE;
 
 @Configuration
 public class BeanConfiguration
@@ -62,17 +63,17 @@ public class BeanConfiguration
     }
 
     @Bean
-    public Map<Class<? extends Product>, LogisticsService>logisticCalculators()
+    public Map<ProductType, LogisticsService>logisticCalculators()
     {
-        Map<Class<? extends Product>, LogisticsService>maps = new HashMap<>();
-        maps.put(PerishableProduct.class, new PerishableLogistics());
-        maps.put(NonPerishableProduct.class, new NonPerishableLogistics());
+        Map<ProductType, LogisticsService>maps = new HashMap<>();
+        maps.put(PERISHABLE, new PerishableLogistics());
+        maps.put(NOT_PERISHABLE, new NonPerishableLogistics());
         return maps;
     }
 
     @Bean
     public AllProductsLogistics allProductsLogisticCalculator(
-        Map<Class<? extends Product>, LogisticsService> logisticCalculators, InMemoryDatabase database)
+        Map<ProductType, LogisticsService> logisticCalculators, InMemoryDatabase database)
     {
         return new AllProductsLogistics(logisticCalculators, database);
     }
