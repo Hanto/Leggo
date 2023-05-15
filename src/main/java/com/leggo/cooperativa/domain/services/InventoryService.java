@@ -8,7 +8,7 @@ import com.leggo.cooperativa.domain.model.producer.ProducerId;
 import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrder;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrderId;
-import com.leggo.cooperativa.domain.model.sellorder.SellOrderLogisticPriced;
+import com.leggo.cooperativa.domain.model.sellorder.SellOrderTaxed;
 import com.leggo.cooperativa.domain.repositories.BuyOrderRepository;
 import com.leggo.cooperativa.domain.repositories.SellOrderRepository;
 import lombok.AllArgsConstructor;
@@ -19,17 +19,24 @@ public class InventoryService
     private final BuyOrderRepository buyOrderRepository;
     private final SellOrderRepository sellOrderRepository;
 
-    public void serveSellOrder(SellOrderLogisticPriced orderDemand)
+    public SellOrder serveSellOrder(SellOrderTaxed orderDemand)
     {
-        Kilogram kilogramsBought = totalKilogramsBought(orderDemand.getYearOfHarvest(), orderDemand.getProductId());
-        Kilogram kilogramsSold = totalKilogramsSold(orderDemand.getYearOfHarvest(), orderDemand.getProductId());
-        Kilogram kilogramsInInventory = kilogramsBought.minus(kilogramsSold);
+        Kilogram kilogramsInInventory = totalKilogramsInStock(orderDemand.getYearOfHarvest(), orderDemand.getProductId());
 
         if (kilogramsInInventory.isLess(orderDemand.getQuantity()) )
             throw new RuntimeException("Not enough inventory to serve order");
 
         SellOrder sellOrder = buildSellOrder(orderDemand);
         sellOrderRepository.addSellOrder(sellOrder);
+
+        return sellOrder;
+    }
+
+    public Kilogram totalKilogramsInStock(Year year, ProductId productId)
+    {
+        Kilogram kilogramsBought = totalKilogramsBought(year, productId);
+        Kilogram kilogramsSold = totalKilogramsSold(year, productId);
+        return kilogramsBought.minus(kilogramsSold);
     }
 
     public Kilogram totalKilogramsBought(Year year, ProductId productId)
@@ -65,7 +72,7 @@ public class InventoryService
             .reduce(Kilogram.of(0), Kilogram::sum);
     }
 
-    private static SellOrder buildSellOrder(SellOrderLogisticPriced orderDemand)
+    private static SellOrder buildSellOrder(SellOrderTaxed orderDemand)
     {
         return SellOrder.builder()
             .id(new SellOrderId())
@@ -76,6 +83,7 @@ public class InventoryService
             .distance(orderDemand.getDistance())
             .productPrice(orderDemand.getProductPrice())
             .logisticsPrice(orderDemand.getLogisticsPrice())
+            .taxes(orderDemand.getTaxes())
             .build();
     }
 }

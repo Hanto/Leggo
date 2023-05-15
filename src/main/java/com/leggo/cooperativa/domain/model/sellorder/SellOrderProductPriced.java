@@ -2,8 +2,8 @@ package com.leggo.cooperativa.domain.model.sellorder;
 
 import com.leggo.cooperativa.domain.model.common.Kilogram;
 import com.leggo.cooperativa.domain.model.common.Kilometer;
+import com.leggo.cooperativa.domain.model.common.PricePerKilogram;
 import com.leggo.cooperativa.domain.model.common.Year;
-import com.leggo.cooperativa.domain.model.product.PricePerKilogram;
 import com.leggo.cooperativa.domain.model.product.ProductId;
 import lombok.Builder;
 import lombok.Getter;

@@ -27,6 +27,11 @@ public class Kilogram
         return amount < other.amount;
     }
 
+    public boolean isGreaterOrEqual(Kilogram other)
+    {
+        return amount >= other.amount;
+    }
+
     public Kilogram minus(Kilogram other)
     {
         return Kilogram.of(amount - other.amount);

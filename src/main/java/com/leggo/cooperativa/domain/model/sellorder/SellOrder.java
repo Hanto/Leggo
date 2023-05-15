@@ -3,8 +3,9 @@ package com.leggo.cooperativa.domain.model.sellorder;
 import com.leggo.cooperativa.domain.model.common.Kilogram;
 import com.leggo.cooperativa.domain.model.common.Kilometer;
 import com.leggo.cooperativa.domain.model.common.Price;
+import com.leggo.cooperativa.domain.model.common.PricePerKilogram;
+import com.leggo.cooperativa.domain.model.common.Tax;
 import com.leggo.cooperativa.domain.model.common.Year;
-import com.leggo.cooperativa.domain.model.product.PricePerKilogram;
 import com.leggo.cooperativa.domain.model.product.ProductId;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,4 +26,10 @@ public class SellOrder
 
     private final PricePerKilogram productPrice;
     private final Price logisticsPrice;
+    private final Tax taxes;
+
+    public Price getTotalPrice()
+    {
+       return productPrice.multiply(quantity).add(logisticsPrice).apply(taxes);
+    }
 }

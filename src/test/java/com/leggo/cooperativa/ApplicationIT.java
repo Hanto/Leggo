@@ -11,21 +11,37 @@ import com.leggo.cooperativa.application.producer.ProducerUseCase;
 import com.leggo.cooperativa.application.product.AddPriceCommand;
 import com.leggo.cooperativa.application.product.CreateProductCommand;
 import com.leggo.cooperativa.application.product.ProductUseCase;
+import com.leggo.cooperativa.application.sellorder.AddSellOrderCommand;
+import com.leggo.cooperativa.application.sellorder.SellOrderUseCase;
 import com.leggo.cooperativa.domain.model.common.Hectare;
+import com.leggo.cooperativa.domain.model.common.Kilogram;
+import com.leggo.cooperativa.domain.model.common.KilogramsPerHectare;
+import com.leggo.cooperativa.domain.model.common.Kilometer;
+import com.leggo.cooperativa.domain.model.common.PricePerKilogram;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
-import com.leggo.cooperativa.domain.model.product.KilogramsPerHectare;
-import com.leggo.cooperativa.domain.model.product.PricePerKilogram;
+import com.leggo.cooperativa.domain.model.product.NonPerishableProduct;
+import com.leggo.cooperativa.domain.model.product.PerishableProduct;
+import com.leggo.cooperativa.domain.model.product.Product;
 import com.leggo.cooperativa.domain.model.product.ProductId;
+import com.leggo.cooperativa.domain.model.sellorder.SellOrder;
 import com.leggo.cooperativa.domain.services.InventoryService;
+import com.leggo.cooperativa.domain.services.PriceService;
+import com.leggo.cooperativa.domain.services.TaxService;
+import com.leggo.cooperativa.domain.services.logistics.AllProductsLogisticCalculator;
+import com.leggo.cooperativa.domain.services.logistics.LogisticCalculatorService;
+import com.leggo.cooperativa.domain.services.logistics.NonPerishableLogistics;
+import com.leggo.cooperativa.domain.services.logistics.PerishableLogistics;
 import com.leggo.cooperativa.infrastructure.repositories.InMemoryDatabase;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import static com.leggo.cooperativa.domain.model.product.ProductType.PERISHABLE;
 
@@ -36,7 +52,16 @@ class ApplicationIT
     private final BuyOrderUSeCase buyOrderUSeCase = new BuyOrderUSeCase(database, database, database, validator);
     private final ProductUseCase productUseCase = new ProductUseCase(database);
     private final ProducerUseCase producerUseCase = new ProducerUseCase(database, database);
-    private final InventoryService inventoryService = new InventoryService(database);
+    private final InventoryService inventoryService = new InventoryService(database, database);
+    private final PriceService priceService = new PriceService(database);
+    private final Map<Class<? extends Product>, LogisticCalculatorService>map = new HashMap<>()
+    {{
+        put(PerishableProduct.class, new PerishableLogistics());
+        put(NonPerishableProduct.class, new NonPerishableLogistics());
+    }};
+    private final LogisticCalculatorService logisticsService = new AllProductsLogisticCalculator(map, database);
+    private final TaxService taxService = new TaxService();
+    private final SellOrderUseCase sellOrderUseCase = new SellOrderUseCase(priceService, logisticsService, inventoryService, taxService);
 
     @Test
     public void pim()
@@ -89,9 +114,20 @@ class ApplicationIT
 
         buyOrderUSeCase.createNonFederatedOrder(pepitoSeller);
 
-        System.out.println(inventoryService.totalKilogramsBought(Year.of(2023), ProductId.of("NARANJA")));
-        System.out.println(inventoryService.totalKilogramsBoughtFrom(Year.of(2023), ProductId.of("NARANJA"), ProducerId.of("PEPITO")));
-        System.out.println(inventoryService.totalKilogramsBoughtFrom(Year.of(2023), ProductId.of("NARANJA"), ProducerId.of("JUANITO")));
+        AddSellOrderCommand addSellOrderCommand = AddSellOrderCommand.builder()
+            .yearOfHavest(Year.of(2023))
+            .productId(ProductId.of("NARANJA"))
+            .quantity(Kilogram.of(1200))
+            .marketRateDay(LocalDate.now())
+            .distance(Kilometer.of(180))
+            .build();
+
+        SellOrder sellOrder = sellOrderUseCase.createSellOrderForDistributor(addSellOrderCommand);
+
+        System.out.println(inventoryService.totalKilogramsInStock(Year.of(2023), ProductId.of("NARANJA")));
+
+        System.out.println(sellOrder);
+        System.out.println(sellOrder.getTotalPrice());
     }
 
 }

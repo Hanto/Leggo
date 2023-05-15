@@ -1,12 +1,12 @@
 package com.leggo.cooperativa.domain.services.logistics
 
 import com.leggo.cooperativa.domain.model.common.Kilogram
+import com.leggo.cooperativa.domain.model.common.KilogramsPerHectare
 import com.leggo.cooperativa.domain.model.common.Kilometer
+import com.leggo.cooperativa.domain.model.common.PricePerKilogram
 import com.leggo.cooperativa.domain.model.common.Year
-import com.leggo.cooperativa.domain.model.product.KilogramsPerHectare
 import com.leggo.cooperativa.domain.model.product.NonPerishableProduct
 import com.leggo.cooperativa.domain.model.product.PerishableProduct
-import com.leggo.cooperativa.domain.model.product.PricePerKilogram
 import com.leggo.cooperativa.domain.model.product.ProductId
 import com.leggo.cooperativa.domain.model.product.ProductType.NOT_PERISHABLE
 import com.leggo.cooperativa.domain.model.product.ProductType.PERISHABLE
@@ -33,7 +33,8 @@ class AllProducsLogisticCalculatorTest
     fun testNotPerishable()
     {
         val product = NOT_PERISHABLE.createProduct(
-            ProductId("ACEITE"), "aceite", KilogramsPerHectare(2000.0), PricePerKilogram.of("0.4347826"))
+            ProductId("ACEITE"), "aceite",
+            KilogramsPerHectare(2000.0), PricePerKilogram.of("0.4347826"))
         productRepository.addProduct(product)
 
         val input = SellOrderProductPriced.builder()
@@ -54,7 +55,8 @@ class AllProducsLogisticCalculatorTest
     fun testPerishable()
     {
         val product = PERISHABLE.createProduct(
-            ProductId("ACEITE"), "aceite", KilogramsPerHectare(2000.0), PricePerKilogram.of("0.4347826"))
+            ProductId("ACEITE"), "aceite",
+            KilogramsPerHectare(2000.0), PricePerKilogram.of("0.4347826"))
 
         productRepository.addProduct(product)
 

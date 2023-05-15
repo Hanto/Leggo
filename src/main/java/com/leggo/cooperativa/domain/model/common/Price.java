@@ -28,4 +28,11 @@ public class Price
     {
         return Price.of(amount.add(other.amount));
     }
+
+    public Price apply(Tax tax)
+    {
+        double factor = (tax.percentage + 100)/100;
+
+        return Price.of(amount.multiply(BigDecimal.valueOf(factor)));
+    }
 }

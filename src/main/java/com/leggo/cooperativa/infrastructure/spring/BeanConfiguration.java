@@ -4,10 +4,13 @@ import com.leggo.cooperativa.application.buyorder.BuyOrderUSeCase;
 import com.leggo.cooperativa.application.buyorder.BuyOrderValidator;
 import com.leggo.cooperativa.application.producer.ProducerUseCase;
 import com.leggo.cooperativa.application.product.ProductUseCase;
+import com.leggo.cooperativa.application.sellorder.SellOrderUseCase;
 import com.leggo.cooperativa.domain.model.product.NonPerishableProduct;
 import com.leggo.cooperativa.domain.model.product.PerishableProduct;
 import com.leggo.cooperativa.domain.model.product.Product;
 import com.leggo.cooperativa.domain.services.InventoryService;
+import com.leggo.cooperativa.domain.services.PriceService;
+import com.leggo.cooperativa.domain.services.TaxService;
 import com.leggo.cooperativa.domain.services.logistics.AllProductsLogisticCalculator;
 import com.leggo.cooperativa.domain.services.logistics.LogisticCalculatorService;
 import com.leggo.cooperativa.domain.services.logistics.NonPerishableLogistics;
@@ -55,7 +58,7 @@ public class BeanConfiguration
     @Bean
     public InventoryService inventoryUseCase(InMemoryDatabase database)
     {
-        return new InventoryService(database);
+        return new InventoryService(database, database);
     }
 
     @Bean
@@ -72,5 +75,24 @@ public class BeanConfiguration
         Map<Class<? extends Product>, LogisticCalculatorService> logisticCalculators, InMemoryDatabase database)
     {
         return new AllProductsLogisticCalculator(logisticCalculators, database);
+    }
+
+    @Bean
+    public PriceService priceService(InMemoryDatabase database)
+    {
+        return new PriceService(database);
+    }
+
+    @Bean
+    public TaxService taxService()
+    {
+        return new TaxService();
+    }
+
+    @Bean
+    public SellOrderUseCase sellOrderUseCase(PriceService priceService, LogisticCalculatorService logisticCalculatorService,
+        InventoryService inventoryService, TaxService taxService)
+    {
+        return new SellOrderUseCase(priceService, logisticCalculatorService, inventoryService, taxService);
     }
 }

@@ -1,6 +1,6 @@
 package com.leggo.cooperativa.domain.services;
 
-import com.leggo.cooperativa.domain.model.product.PricePerKilogram;
+import com.leggo.cooperativa.domain.model.common.PricePerKilogram;
 import com.leggo.cooperativa.domain.model.product.Product;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrderDemanded;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrderProductPriced;
@@ -34,7 +34,7 @@ public class PriceService
         return SellOrderProductPriced.builder()
             .yearOfHarvest(order.getYearOfHarvest())
             .productId(order.getProductId())
-            .quantity(order.getTotalKilograms())
+            .quantity(order.getQuantity())
             .marketRateDay(order.getMarketRateDay())
             .distance(order.getDistance())
             .productPrice(priceWithMargin)

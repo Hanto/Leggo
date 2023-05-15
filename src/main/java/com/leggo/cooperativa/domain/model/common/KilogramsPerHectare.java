@@ -1,7 +1,5 @@
-package com.leggo.cooperativa.domain.model.product;
+package com.leggo.cooperativa.domain.model.common;
 
-import com.leggo.cooperativa.domain.model.common.Hectare;
-import com.leggo.cooperativa.domain.model.common.Kilogram;
 import lombok.Data;
 
 @Data

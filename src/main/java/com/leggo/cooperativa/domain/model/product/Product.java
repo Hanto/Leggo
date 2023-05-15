@@ -1,5 +1,7 @@
 package com.leggo.cooperativa.domain.model.product;
 
+import com.leggo.cooperativa.domain.model.common.KilogramsPerHectare;
+import com.leggo.cooperativa.domain.model.common.PricePerKilogram;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;

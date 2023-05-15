@@ -1,5 +1,7 @@
 package com.leggo.cooperativa.domain.model.product;
 
+import com.leggo.cooperativa.domain.model.common.KilogramsPerHectare;
+import com.leggo.cooperativa.domain.model.common.PricePerKilogram;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

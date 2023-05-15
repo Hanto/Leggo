@@ -2,8 +2,8 @@ package com.leggo.cooperativa.domain.services.logistics;
 
 import com.leggo.cooperativa.domain.model.common.Kilogram;
 import com.leggo.cooperativa.domain.model.common.Kilometer;
-import com.leggo.cooperativa.domain.model.logistics.PricePerKilogramAndKilometer;
-import com.leggo.cooperativa.domain.model.logistics.PricePerKilometer;
+import com.leggo.cooperativa.domain.model.common.PricePerKilogramAndKilometer;
+import com.leggo.cooperativa.domain.model.common.PricePerKilometer;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrderLogisticPriced;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrderProductPriced;
 

@@ -1,8 +1,5 @@
-package com.leggo.cooperativa.domain.model.logistics;
+package com.leggo.cooperativa.domain.model.common;
 
-import com.leggo.cooperativa.domain.model.common.Kilogram;
-import com.leggo.cooperativa.domain.model.common.Kilometer;
-import com.leggo.cooperativa.domain.model.common.Price;
 import lombok.Data;
 
 import java.math.BigDecimal;

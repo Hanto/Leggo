@@ -1,5 +1,8 @@
 package com.leggo.cooperativa.domain.model.product;
 
+import com.leggo.cooperativa.domain.model.common.KilogramsPerHectare;
+import com.leggo.cooperativa.domain.model.common.PricePerKilogram;
+
 public enum ProductType
 {
     PERISHABLE
