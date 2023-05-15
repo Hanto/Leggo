@@ -5,8 +5,8 @@ import com.leggo.cooperativa.domain.model.common.KilogramsPerHectare
 import com.leggo.cooperativa.domain.model.common.Kilometer
 import com.leggo.cooperativa.domain.model.common.PricePerKilogram
 import com.leggo.cooperativa.domain.model.common.Year
-import com.leggo.cooperativa.domain.model.product.NonPerishableProduct
-import com.leggo.cooperativa.domain.model.product.PerishableProduct
+import com.leggo.cooperativa.domain.model.product.MarketRate
+import com.leggo.cooperativa.domain.model.product.Product
 import com.leggo.cooperativa.domain.model.product.ProductId
 import com.leggo.cooperativa.domain.model.product.ProductType.NOT_PERISHABLE
 import com.leggo.cooperativa.domain.model.product.ProductType.PERISHABLE
@@ -24,17 +24,18 @@ class AllProducsLogisticsTest
     private val nonPerishable = NonPerishableLogistics()
     private val perishable = PerishableLogistics()
     private val map = mapOf(
-        NonPerishableProduct::class.java to nonPerishable,
-        PerishableProduct::class.java to perishable)
+        NOT_PERISHABLE to nonPerishable,
+        PERISHABLE to perishable)
 
     private val underTest = AllProductsLogistics(map, productRepository)
 
     @Test
     fun testNotPerishable()
     {
-        val product = NOT_PERISHABLE.createProduct(
+        val product = Product(
             ProductId("ACEITE"), "aceite",
-            KilogramsPerHectare(2000.0), PricePerKilogram.of("0.4347826"))
+            KilogramsPerHectare(2000.0), MarketRate(PricePerKilogram.of("0.4347826")),
+            NOT_PERISHABLE)
         productRepository.addProduct(product)
 
         val input = SellOrderProductPriced.builder()
@@ -54,9 +55,10 @@ class AllProducsLogisticsTest
     @Test
     fun testPerishable()
     {
-        val product = PERISHABLE.createProduct(
+        val product = Product(
             ProductId("ACEITE"), "aceite",
-            KilogramsPerHectare(2000.0), PricePerKilogram.of("0.4347826"))
+            KilogramsPerHectare(2000.0), MarketRate(PricePerKilogram.of("0.4347826")),
+            PERISHABLE)
 
         productRepository.addProduct(product)
 
