@@ -1,17 +1,15 @@
-package com.leggo.cooperativa.domain.services;
+package com.leggo.cooperativa.domain.services.logistics;
 
 import com.leggo.cooperativa.domain.model.common.Kilogram;
 import com.leggo.cooperativa.domain.model.common.Kilometer;
-import com.leggo.cooperativa.domain.model.common.Price;
 import com.leggo.cooperativa.domain.model.logistics.PricePerKilogramAndKilometer;
 import com.leggo.cooperativa.domain.model.logistics.PricePerKilometer;
-import com.leggo.cooperativa.domain.model.product.Product;
+import com.leggo.cooperativa.domain.model.sellorder.SellOrderLogisticPriced;
+import com.leggo.cooperativa.domain.model.sellorder.SellOrderProductPriced;
 import lombok.AllArgsConstructor;
 
-import java.time.LocalDate;
-
 @AllArgsConstructor
-public class PerishableLogistics implements LogisticCalculator
+public class PerishableLogistics implements LogisticCalculatorService
 {
     private final BaseLogisticCalculator calc = BaseLogisticCalculator.builder()
         .smallLogisticPricePerKilogramAndKilometer(PricePerKilogramAndKilometer.of("0.01"))
@@ -23,8 +21,8 @@ public class PerishableLogistics implements LogisticCalculator
         .biglogisticUsesMultipleTrips(true).build();
 
     @Override
-    public Price calculateLogistic(Product product, Kilometer distance, Kilogram quantity, LocalDate day)
+    public SellOrderLogisticPriced calculateLogistic(SellOrderProductPriced order)
     {
-        return calc.calculateLogistic(product, distance, quantity, day);
+        return calc.calculateLogistic(order);
     }
 }

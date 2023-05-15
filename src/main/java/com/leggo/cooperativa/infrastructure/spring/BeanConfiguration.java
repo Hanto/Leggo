@@ -2,16 +2,16 @@ package com.leggo.cooperativa.infrastructure.spring;
 
 import com.leggo.cooperativa.application.buyorder.BuyOrderUSeCase;
 import com.leggo.cooperativa.application.buyorder.BuyOrderValidator;
-import com.leggo.cooperativa.application.inventory.InventoryUseCase;
 import com.leggo.cooperativa.application.producer.ProducerUseCase;
 import com.leggo.cooperativa.application.product.ProductUseCase;
 import com.leggo.cooperativa.domain.model.product.NonPerishableProduct;
 import com.leggo.cooperativa.domain.model.product.PerishableProduct;
 import com.leggo.cooperativa.domain.model.product.Product;
-import com.leggo.cooperativa.domain.services.AllProductsLogisticCalculator;
-import com.leggo.cooperativa.domain.services.LogisticCalculator;
-import com.leggo.cooperativa.domain.services.NonPerishableLogistics;
-import com.leggo.cooperativa.domain.services.PerishableLogistics;
+import com.leggo.cooperativa.domain.services.InventoryService;
+import com.leggo.cooperativa.domain.services.logistics.AllProductsLogisticCalculator;
+import com.leggo.cooperativa.domain.services.logistics.LogisticCalculatorService;
+import com.leggo.cooperativa.domain.services.logistics.NonPerishableLogistics;
+import com.leggo.cooperativa.domain.services.logistics.PerishableLogistics;
 import com.leggo.cooperativa.infrastructure.repositories.InMemoryDatabase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,23 +53,24 @@ public class BeanConfiguration
     }
 
     @Bean
-    public InventoryUseCase inventoryUseCase(InMemoryDatabase database)
+    public InventoryService inventoryUseCase(InMemoryDatabase database)
     {
-        return new InventoryUseCase(database);
+        return new InventoryService(database);
     }
 
     @Bean
-    public Map<Class<? extends Product>, LogisticCalculator>logisticCalculators()
+    public Map<Class<? extends Product>, LogisticCalculatorService>logisticCalculators()
     {
-        Map<Class<? extends Product>, LogisticCalculator>maps = new HashMap<>();
+        Map<Class<? extends Product>, LogisticCalculatorService>maps = new HashMap<>();
         maps.put(PerishableProduct.class, new PerishableLogistics());
         maps.put(NonPerishableProduct.class, new NonPerishableLogistics());
         return maps;
     }
 
     @Bean
-    public AllProductsLogisticCalculator allProductsLogisticCalculator(Map<Class<? extends Product>, LogisticCalculator> logisticCalculators)
+    public AllProductsLogisticCalculator allProductsLogisticCalculator(
+        Map<Class<? extends Product>, LogisticCalculatorService> logisticCalculators, InMemoryDatabase database)
     {
-        return new AllProductsLogisticCalculator(logisticCalculators);
+        return new AllProductsLogisticCalculator(logisticCalculators, database);
     }
 }

@@ -25,4 +25,9 @@ public class PricePerKilogram
     {
         return Price.of(this.amount.multiply(BigDecimal.valueOf(kilograms.getAmount())));
     }
+
+    public PricePerKilogram multiply(double factor)
+    {
+        return PricePerKilogram.of(amount.multiply(BigDecimal.valueOf(factor)));
+    }
 }

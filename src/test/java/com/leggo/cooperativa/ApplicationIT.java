@@ -4,7 +4,6 @@ import com.leggo.cooperativa.application.buyorder.BuyOrderUSeCase;
 import com.leggo.cooperativa.application.buyorder.BuyOrderValidator;
 import com.leggo.cooperativa.application.buyorder.CreateNonFederatedOrderCommand;
 import com.leggo.cooperativa.application.buyorder.CreatedFederatedOrderCommand;
-import com.leggo.cooperativa.application.inventory.InventoryUseCase;
 import com.leggo.cooperativa.application.producer.CreateFieldsCommand;
 import com.leggo.cooperativa.application.producer.CreateFieldsCommand.FieldDTO;
 import com.leggo.cooperativa.application.producer.CreateProducerCommand;
@@ -18,6 +17,7 @@ import com.leggo.cooperativa.domain.model.producer.ProducerId;
 import com.leggo.cooperativa.domain.model.product.KilogramsPerHectare;
 import com.leggo.cooperativa.domain.model.product.PricePerKilogram;
 import com.leggo.cooperativa.domain.model.product.ProductId;
+import com.leggo.cooperativa.domain.services.InventoryService;
 import com.leggo.cooperativa.infrastructure.repositories.InMemoryDatabase;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +36,7 @@ class ApplicationIT
     private final BuyOrderUSeCase buyOrderUSeCase = new BuyOrderUSeCase(database, database, database, validator);
     private final ProductUseCase productUseCase = new ProductUseCase(database);
     private final ProducerUseCase producerUseCase = new ProducerUseCase(database, database);
-    private final InventoryUseCase inventoryUseCase = new InventoryUseCase(database);
+    private final InventoryService inventoryService = new InventoryService(database);
 
     @Test
     public void pim()
@@ -89,9 +89,9 @@ class ApplicationIT
 
         buyOrderUSeCase.createNonFederatedOrder(pepitoSeller);
 
-        System.out.println(inventoryUseCase.totalKilogramsBought(Year.of(2023), ProductId.of("NARANJA")));
-        System.out.println(inventoryUseCase.totalKilogramsBoughtFrom(Year.of(2023), ProductId.of("NARANJA"), ProducerId.of("PEPITO")));
-        System.out.println(inventoryUseCase.totalKilogramsBoughtFrom(Year.of(2023), ProductId.of("NARANJA"), ProducerId.of("JUANITO")));
+        System.out.println(inventoryService.totalKilogramsBought(Year.of(2023), ProductId.of("NARANJA")));
+        System.out.println(inventoryService.totalKilogramsBoughtFrom(Year.of(2023), ProductId.of("NARANJA"), ProducerId.of("PEPITO")));
+        System.out.println(inventoryService.totalKilogramsBoughtFrom(Year.of(2023), ProductId.of("NARANJA"), ProducerId.of("JUANITO")));
     }
 
 }

@@ -10,10 +10,10 @@ import com.leggo.cooperativa.domain.model.product.ProductId;
 import java.util.List;
 import java.util.Optional;
 
-public interface SellerRepository
+public interface BuyOrderRepository
 {
-    void addFederatedSeller(FederatedOrder seller);
-    void addNonFederatedSeller(NonFederatedOrder seller);
+    void addFederatedOrder(FederatedOrder order);
+    void addNonFederatedOrder(NonFederatedOrder order);
 
     Optional<FederatedOrder> findFederatedOrderBy(Year year, ProductId productId);
     Optional<NonFederatedOrder> findNonFederatedOrderBy(Year year, ProductId product, ProducerId producerId);
@@ -21,7 +21,7 @@ public interface SellerRepository
     void setMaxHectaresForSmallProducer(Year year, Hectare maxHectares);
     Optional<Hectare> maxHectaresForSmallProducer(Year year);
 
-    int numberOfNonFederatedOrders(Year year, ProducerId producerId);
+    int numberOfNonFederatedOrdersFrom(Year year, ProducerId producerId);
     Optional<FederatedOrder>findFederatedOrdersBy(Year year, ProductId productId);
     List<NonFederatedOrder> findNonFederatedOrdersBy(Year year, ProductId productId);
     Optional<NonFederatedOrder>findNonFederatedOrderBy(Year year, ProducerId producerId, ProductId productId);

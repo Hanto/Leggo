@@ -8,9 +8,9 @@ import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.Producer;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
 import com.leggo.cooperativa.domain.model.product.ProductId;
+import com.leggo.cooperativa.domain.repositories.BuyOrderRepository;
 import com.leggo.cooperativa.domain.repositories.ProducerRepository;
 import com.leggo.cooperativa.domain.repositories.ProductRepository;
-import com.leggo.cooperativa.domain.repositories.SellerRepository;
 import lombok.AllArgsConstructor;
 
 import java.util.Collection;
@@ -26,7 +26,7 @@ public class BuyOrderValidator
 {
     public static final int MAX_ORDERS_FOR_SMALL_PRODUCERS = 5;
     private final ProductRepository productRepository;
-    private final SellerRepository sellerRepository;
+    private final BuyOrderRepository buyOrderRepository;
     private final ProducerRepository producerRepository;
 
     public void validateFederateOrder(FederatedOrder order)
@@ -77,31 +77,31 @@ public class BuyOrderValidator
 
     private boolean isAlreadySoldAsFederatedSeller(Year year, ProductId productId, ProducerId producer)
     {
-        return sellerRepository.findFederatedOrderBy(year, productId)
+        return buyOrderRepository.findFederatedOrderBy(year, productId)
             .map(federatedSeller -> federatedSeller.containsTheProducer(producer))
             .orElse(false);
     }
 
     private boolean isAlreadySoldAsNonFederatedSeller(Year year, ProductId productId, ProducerId producerId)
     {
-        return sellerRepository.findNonFederatedOrderBy(year, productId, producerId)
+        return buyOrderRepository.findNonFederatedOrderBy(year, productId, producerId)
             .isPresent();
     }
 
     private boolean isAlreadySoldByANonFederatedSeller(Year year, ProductId productId)
     {
-        return sellerRepository.findFederatedOrderBy(year, productId)
+        return buyOrderRepository.findFederatedOrderBy(year, productId)
             .isPresent();
     }
 
     private boolean isAlreadySellingMoreThanFiveProducts(Year year, ProducerId producerId)
     {
-        return sellerRepository.numberOfNonFederatedOrders(year, producerId) >= MAX_ORDERS_FOR_SMALL_PRODUCERS;
+        return buyOrderRepository.numberOfNonFederatedOrdersFrom(year, producerId) >= MAX_ORDERS_FOR_SMALL_PRODUCERS;
     }
 
     private boolean hasBigSellers(Year year, Collection<Producer> producers)
     {
-        Optional<Hectare> maybeHectareLimit = sellerRepository.maxHectaresForSmallProducer(year);
+        Optional<Hectare> maybeHectareLimit = buyOrderRepository.maxHectaresForSmallProducer(year);
 
         if (maybeHectareLimit.isEmpty())
             throw new IllegalArgumentException(format("The are no hectare limits for year %s", year));

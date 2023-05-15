@@ -8,22 +8,26 @@ import com.leggo.cooperativa.domain.model.producer.Producer;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
 import com.leggo.cooperativa.domain.model.product.Product;
 import com.leggo.cooperativa.domain.model.product.ProductId;
+import com.leggo.cooperativa.domain.model.sellorder.SellOrder;
+import com.leggo.cooperativa.domain.repositories.BuyOrderRepository;
 import com.leggo.cooperativa.domain.repositories.ProducerRepository;
 import com.leggo.cooperativa.domain.repositories.ProductRepository;
-import com.leggo.cooperativa.domain.repositories.SellerRepository;
+import com.leggo.cooperativa.domain.repositories.SellOrderRepository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class InMemoryDatabase implements ProductRepository, ProducerRepository, SellerRepository
+public class InMemoryDatabase implements ProductRepository, ProducerRepository, BuyOrderRepository,
+    SellOrderRepository
 {
     private final Map<ProductId, Product>productCatalog = new HashMap<>();
     private final Map<ProducerId, Producer>producers = new HashMap<>();
     private final Map<Year, Hectare>maxHarvestByYear = new HashMap<>();
-    private final FederatedOrdersContainer federatedSellers = new FederatedOrdersContainer();
-    private final NonFederatedOrdersContainer nonFederatedSellers = new NonFederatedOrdersContainer();
+    private final FederatedOrdersContainer federatedOrders = new FederatedOrdersContainer();
+    private final NonFederatedOrdersContainer nonFederatedOrders = new NonFederatedOrdersContainer();
+    private final SellOrderContainer sellOrderContainer = new SellOrderContainer();
 
     @Override
     public void addProduct(Product product)
@@ -74,50 +78,62 @@ public class InMemoryDatabase implements ProductRepository, ProducerRepository, 
     }
 
     @Override
-    public void addFederatedSeller(FederatedOrder seller)
+    public void addFederatedOrder(FederatedOrder order)
     {
-        federatedSellers.add(seller);
+        federatedOrders.add(order);
     }
 
     @Override
     public Optional<FederatedOrder> findFederatedOrderBy(Year year, ProductId productId)
     {
-        return federatedSellers.findBy(year, productId);
+        return federatedOrders.findBy(year, productId);
     }
 
     @Override
-    public void addNonFederatedSeller(NonFederatedOrder seller)
+    public void addNonFederatedOrder(NonFederatedOrder order)
     {
-       nonFederatedSellers.add(seller);
+       nonFederatedOrders.add(order);
     }
 
     @Override
     public Optional<NonFederatedOrder> findNonFederatedOrderBy(Year year, ProductId productId, ProducerId producerId)
     {
-        return nonFederatedSellers.findBy(year, producerId, productId);
+        return nonFederatedOrders.findBy(year, producerId, productId);
     }
 
     @Override
-    public int numberOfNonFederatedOrders(Year year, ProducerId producerId)
+    public int numberOfNonFederatedOrdersFrom(Year year, ProducerId producerId)
     {
-        return nonFederatedSellers.findBy(year, producerId).size();
+        return nonFederatedOrders.findBy(year, producerId).size();
     }
 
     @Override
     public Optional<FederatedOrder>findFederatedOrdersBy(Year year, ProductId productId)
     {
-        return federatedSellers.findBy(year, productId);
+        return federatedOrders.findBy(year, productId);
     }
 
     @Override
     public Optional<NonFederatedOrder>findNonFederatedOrderBy(Year year, ProducerId producerId, ProductId productId)
     {
-        return nonFederatedSellers.findBy(year, producerId,productId);
+        return nonFederatedOrders.findBy(year, producerId,productId);
     }
 
     @Override
     public List<NonFederatedOrder>findNonFederatedOrdersBy(Year year, ProductId productId)
     {
-        return nonFederatedSellers.findBy(year, productId);
+        return nonFederatedOrders.findBy(year, productId);
+    }
+
+    @Override
+    public void addSellOrder(SellOrder order)
+    {
+        sellOrderContainer.add(order);
+    }
+
+    @Override
+    public List<SellOrder> findSellOrdersBy(Year year, ProductId productId)
+    {
+        return sellOrderContainer.findBy(year, productId);
     }
 }

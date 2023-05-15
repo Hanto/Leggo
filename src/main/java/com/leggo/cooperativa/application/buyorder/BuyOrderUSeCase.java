@@ -10,9 +10,9 @@ import com.leggo.cooperativa.domain.model.producer.Producer;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
 import com.leggo.cooperativa.domain.model.product.Product;
 import com.leggo.cooperativa.domain.model.product.ProductId;
+import com.leggo.cooperativa.domain.repositories.BuyOrderRepository;
 import com.leggo.cooperativa.domain.repositories.ProducerRepository;
 import com.leggo.cooperativa.domain.repositories.ProductRepository;
-import com.leggo.cooperativa.domain.repositories.SellerRepository;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -27,7 +27,7 @@ public class BuyOrderUSeCase
 {
     private final ProductRepository productRepository;
     private final ProducerRepository producerRepository;
-    private final SellerRepository sellerRepository;
+    private final BuyOrderRepository buyOrderRepository;
     private final BuyOrderValidator validator;
 
     public void createFederatedOrder(CreatedFederatedOrderCommand command)
@@ -40,7 +40,7 @@ public class BuyOrderUSeCase
             new BuyOrderId(), command.getYear(), contributions, command.getProductId(), LocalDateTime.now());
 
         validator.validateFederateOrder(order);
-        sellerRepository.addFederatedSeller(order);
+        buyOrderRepository.addFederatedOrder(order);
     }
 
     public void createNonFederatedOrder(CreateNonFederatedOrderCommand command)
@@ -53,12 +53,12 @@ public class BuyOrderUSeCase
             new BuyOrderId(), command.getYear(), contribution, command.getProductId(), LocalDateTime.now());
 
         validator.validateNonFederateOrder(order);
-        sellerRepository.addNonFederatedSeller(order);
+        buyOrderRepository.addNonFederatedOrder(order);
     }
 
     public void setHectareLimitFor(Year year, Hectare hectare)
     {
-        sellerRepository.setMaxHectaresForSmallProducer(year, hectare);
+        buyOrderRepository.setMaxHectaresForSmallProducer(year, hectare);
     }
 
     // KILOGRAMS
