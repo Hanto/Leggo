@@ -20,7 +20,7 @@ public class ProducerController
     @PostMapping("/producer")
     public void createProducer(@RequestBody CreateProducerRequest request)
     {
-        CreateProducerCommand command = new CreateProducerCommand(request);
+        CreateProducerCommand command = request.toCommand();
 
         producerUseCase.createProducer(command);
     }
@@ -28,7 +28,7 @@ public class ProducerController
     @PostMapping("/producer/fields")
     public void createFields(@RequestBody CreateFieldsRequest request)
     {
-        CreateFieldsCommand command = new CreateFieldsCommand(request);
+        CreateFieldsCommand command = request.toCommand();
 
         producerUseCase.createFields(command);
     }

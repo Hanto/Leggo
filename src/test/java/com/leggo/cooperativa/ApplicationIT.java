@@ -122,7 +122,7 @@ class ApplicationIT
             .distance(Kilometer.of(180))
             .build();
 
-        SellOrder sellOrder = sellOrderUseCase.createSellOrderForDistributor(addSellOrderCommand);
+        SellOrder sellOrder = sellOrderUseCase.createSellOrderForMajorist(addSellOrderCommand);
 
         System.out.println(inventoryService.totalKilogramsInStock(Year.of(2023), ProductId.of("NARANJA")));
 

@@ -20,7 +20,7 @@ public class ProductController
     @PostMapping("/product/")
     public void createProduct(@RequestBody CreateProductRequest request)
     {
-        CreateProductCommand command = new CreateProductCommand(request);
+        CreateProductCommand command = request.toCommand();
 
         productUseCase.createProduct(command);
     }
@@ -28,7 +28,7 @@ public class ProductController
     @PostMapping("/product/pricePerKilogram")
     public void addPrice(@RequestBody AddPriceRequest request)
     {
-        AddPriceCommand command = new AddPriceCommand(request);
+        AddPriceCommand command = request.toCommand();
 
         productUseCase.addPriceForProduct(command);
     }

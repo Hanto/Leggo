@@ -24,7 +24,7 @@ public class InventoryService
         Kilogram kilogramsInInventory = totalKilogramsInStock(orderDemand.getYearOfHarvest(), orderDemand.getProductId());
 
         if (kilogramsInInventory.isLess(orderDemand.getQuantity()) )
-            throw new RuntimeException("Not enough inventory to serve order");
+            throw new RuntimeException(String.format("Not enough inventory to serve order: %s", kilogramsInInventory));
 
         SellOrder sellOrder = buildSellOrder(orderDemand);
         sellOrderRepository.addSellOrder(sellOrder);

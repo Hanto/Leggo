@@ -23,7 +23,7 @@ public class BuyOrderController
     @PostMapping("/buyorder/nonfedered")
     public void createNonFederedOrder(@RequestBody CreateNonFederatedOrderRequest request)
     {
-        CreateNonFederatedOrderCommand command = new CreateNonFederatedOrderCommand(request);
+        CreateNonFederatedOrderCommand command = request.toCommand();
 
         buyOrderUSeCase.createNonFederatedOrder(command);
     }
@@ -31,7 +31,7 @@ public class BuyOrderController
     @PostMapping("/buyorder/federed")
     public void createFederedOrder(@RequestBody CreateFederatedOrderRequest request)
     {
-        CreatedFederatedOrderCommand command = new CreatedFederatedOrderCommand(request);
+        CreatedFederatedOrderCommand command = request.toCommand();
 
         buyOrderUSeCase.createFederatedOrder(command);
     }

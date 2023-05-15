@@ -29,7 +29,7 @@ public class SellOrderUseCase
         return inventory.serveSellOrder(orderTaxed);
     }
 
-    public SellOrder createSellOrderForDistributor(AddSellOrderCommand command)
+    public SellOrder createSellOrderForMajorist(AddSellOrderCommand command)
     {
         return createSellOrder(command);
     }
