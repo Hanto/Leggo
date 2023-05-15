@@ -15,7 +15,7 @@ public abstract class Product
     @Getter private final ProductId productId;
     @Getter private final String name;
     @Getter private final KilogramsPerHectare kilogramsPerHectare;
-    private final MarketRate marketRates;
+    @Getter private final MarketRate marketRates;
 
     public PricePerKilogram lastMarketPrice(LocalDate day)
     {

@@ -1,7 +1,7 @@
 
-POST http://localhost:8080/api/producer/limit/2023/5
+POST http://{{serveraddress}}/api/producer/limit/2023/5
 ###
-POST http://localhost:8080/api/product/
+POST http://{{serveraddress}}/api/product/
 Content-Type: application/json
 
 {

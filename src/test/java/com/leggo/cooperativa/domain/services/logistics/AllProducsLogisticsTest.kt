@@ -11,7 +11,7 @@ import com.leggo.cooperativa.domain.model.product.ProductId
 import com.leggo.cooperativa.domain.model.product.ProductType.NOT_PERISHABLE
 import com.leggo.cooperativa.domain.model.product.ProductType.PERISHABLE
 import com.leggo.cooperativa.domain.model.sellorder.SellOrderProductPriced
-import com.leggo.cooperativa.infrastructure.repositories.InMemoryDatabase
+import com.leggo.cooperativa.infrastructure.repositories.memory.InMemoryDatabase
 import java.math.BigDecimal
 import java.time.LocalDate
 import org.assertj.core.api.Assertions.assertThat
@@ -19,18 +19,15 @@ import org.junit.jupiter.api.Test
 
 class AllProducsLogisticsTest
 {
-    private val productRepository = InMemoryDatabase()
+    private val productRepository =
+        InMemoryDatabase()
     private val nonPerishable = NonPerishableLogistics()
     private val perishable = PerishableLogistics()
     private val map = mapOf(
         NonPerishableProduct::class.java to nonPerishable,
         PerishableProduct::class.java to perishable)
 
-    private val underTest =
-        AllProductsLogistics(
-            map,
-            productRepository
-        )
+    private val underTest = AllProductsLogistics(map, productRepository)
 
     @Test
     fun testNotPerishable()

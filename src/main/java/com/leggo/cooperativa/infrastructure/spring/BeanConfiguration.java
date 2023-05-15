@@ -15,7 +15,7 @@ import com.leggo.cooperativa.domain.services.TaxService;
 import com.leggo.cooperativa.domain.services.logistics.AllProductsLogistics;
 import com.leggo.cooperativa.domain.services.logistics.NonPerishableLogistics;
 import com.leggo.cooperativa.domain.services.logistics.PerishableLogistics;
-import com.leggo.cooperativa.infrastructure.repositories.InMemoryDatabase;
+import com.leggo.cooperativa.infrastructure.repositories.memory.InMemoryDatabase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

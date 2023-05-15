@@ -1,6 +1,7 @@
 package com.leggo.cooperativa.domain.model.product;
 
 import com.leggo.cooperativa.domain.model.common.PricePerKilogram;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.TreeMap;
 
-@RequiredArgsConstructor @ToString
+@RequiredArgsConstructor @ToString @Getter
 public class MarketRate
 {
     private final TreeMap<LocalDate, PricePerKilogram> pricesByDay = new TreeMap<>();
