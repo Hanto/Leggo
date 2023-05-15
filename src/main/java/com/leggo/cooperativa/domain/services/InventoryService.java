@@ -19,7 +19,7 @@ public class InventoryService
     private final BuyOrderRepository buyOrderRepository;
     private final SellOrderRepository sellOrderRepository;
 
-    public SellOrder enterProductFrom(SellOrderTaxed orderDemand)
+    public SellOrder exitProductFrom(SellOrderTaxed orderDemand)
     {
         Kilogram kilogramsInInventory = totalKilogramsInStock(orderDemand.getYearOfHarvest(), orderDemand.getProductId());
 
@@ -27,17 +27,18 @@ public class InventoryService
             throw new RuntimeException(String.format("Not enough inventory to serve order: %s", kilogramsInInventory));
 
         SellOrder sellOrder = buildSellOrder(orderDemand);
+
         sellOrderRepository.addSellOrder(sellOrder);
 
         return sellOrder;
     }
 
-    public void exitProductFrom(FederatedOrder buyOrder)
+    public void enterProductFrom(FederatedOrder buyOrder)
     {
         buyOrderRepository.addFederatedOrder(buyOrder);
     }
 
-    public void exitProductFrom(NonFederatedOrder buyOrder)
+    public void enterProductFrom(NonFederatedOrder buyOrder)
     {
         buyOrderRepository.addNonFederatedOrder(buyOrder);
     }

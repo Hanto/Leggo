@@ -29,7 +29,7 @@ public class SellOrderUseCase
         SellOrderLogisticPriced orderLogisticPriced = logistics.calculateLogistic(orderProductPriced);
         SellOrderTaxed orderTaxed = taxService.applyCorrectTax(orderLogisticPriced);
 
-        return inventory.enterProductFrom(orderTaxed);
+        return inventory.exitProductFrom(orderTaxed);
     }
 
     public SellOrder createSellOrderForMajorist(AddSellOrderCommand command)

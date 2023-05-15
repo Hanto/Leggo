@@ -40,7 +40,7 @@ public class BuyOrderUSeCase
             new BuyOrderId(), command.getYear(), contributions, command.getProductId(), LocalDateTime.now());
 
         validator.validateFederateOrder(order);
-        inventoryService.exitProductFrom(order);
+        inventoryService.enterProductFrom(order);
     }
 
     public void createNonFederatedOrder(CreateNonFederatedOrderCommand command)
@@ -53,7 +53,7 @@ public class BuyOrderUSeCase
             new BuyOrderId(), command.getYear(), contribution, command.getProductId(), LocalDateTime.now());
 
         validator.validateNonFederateOrder(order);
-        inventoryService.exitProductFrom(order);
+        inventoryService.enterProductFrom(order);
     }
 
     // KILOGRAMS
