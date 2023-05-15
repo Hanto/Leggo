@@ -49,10 +49,10 @@ class ApplicationIT
 {
     private final InMemoryDatabase database = new InMemoryDatabase();
     private final BuyOrderValidator validator = new BuyOrderValidator(database, database, database);
-    private final BuyOrderUSeCase buyOrderUSeCase = new BuyOrderUSeCase(database, database, database, validator);
+    private final InventoryService inventoryService = new InventoryService(database, database);
+    private final BuyOrderUSeCase buyOrderUSeCase = new BuyOrderUSeCase(database, database, inventoryService, validator);
     private final ProductUseCase productUseCase = new ProductUseCase(database);
     private final ProducerUseCase producerUseCase = new ProducerUseCase(database, database);
-    private final InventoryService inventoryService = new InventoryService(database, database);
     private final PriceService priceService = new PriceService(database);
     private final Map<Class<? extends Product>, LogisticsService>map = new HashMap<>()
     {{
@@ -97,8 +97,8 @@ class ApplicationIT
         producerUseCase.createFields(pepitoFieldsCommand);
         producerUseCase.createFields(juanitoFieldsCommand);
 
-        buyOrderUSeCase.setHectareLimitFor(new Year(2023), Hectare.of(5));
-        buyOrderUSeCase.setHectareLimitFor(new Year(2024), Hectare.of(5));
+        producerUseCase.setHectareLimitFor(new Year(2023), Hectare.of(5));
+        producerUseCase.setHectareLimitFor(new Year(2024), Hectare.of(5));
 
         CreatedFederatedOrderCommand pepitoJuanitoSellers = new CreatedFederatedOrderCommand(
             new HashSet<>(Arrays.asList(new ProducerId("PEPITO"), new ProducerId("JUANITO"))),
