@@ -26,10 +26,10 @@ import com.leggo.cooperativa.domain.model.product.Product;
 import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrder;
 import com.leggo.cooperativa.domain.services.InventoryService;
+import com.leggo.cooperativa.domain.services.LogisticsService;
 import com.leggo.cooperativa.domain.services.PriceService;
 import com.leggo.cooperativa.domain.services.TaxService;
-import com.leggo.cooperativa.domain.services.logistics.AllProductsLogisticCalculator;
-import com.leggo.cooperativa.domain.services.logistics.LogisticCalculatorService;
+import com.leggo.cooperativa.domain.services.logistics.AllProductsLogistics;
 import com.leggo.cooperativa.domain.services.logistics.NonPerishableLogistics;
 import com.leggo.cooperativa.domain.services.logistics.PerishableLogistics;
 import com.leggo.cooperativa.infrastructure.repositories.InMemoryDatabase;
@@ -54,12 +54,12 @@ class ApplicationIT
     private final ProducerUseCase producerUseCase = new ProducerUseCase(database, database);
     private final InventoryService inventoryService = new InventoryService(database, database);
     private final PriceService priceService = new PriceService(database);
-    private final Map<Class<? extends Product>, LogisticCalculatorService>map = new HashMap<>()
+    private final Map<Class<? extends Product>, LogisticsService>map = new HashMap<>()
     {{
         put(PerishableProduct.class, new PerishableLogistics());
         put(NonPerishableProduct.class, new NonPerishableLogistics());
     }};
-    private final LogisticCalculatorService logisticsService = new AllProductsLogisticCalculator(map, database);
+    private final LogisticsService logisticsService = new AllProductsLogistics(map, database);
     private final TaxService taxService = new TaxService();
     private final SellOrderUseCase sellOrderUseCase = new SellOrderUseCase(priceService, logisticsService, inventoryService, taxService);
 

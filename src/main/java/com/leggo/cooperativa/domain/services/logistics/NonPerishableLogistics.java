@@ -6,10 +6,11 @@ import com.leggo.cooperativa.domain.model.common.PricePerKilogramAndKilometer;
 import com.leggo.cooperativa.domain.model.common.PricePerKilometer;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrderLogisticPriced;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrderProductPriced;
+import com.leggo.cooperativa.domain.services.LogisticsService;
 
-public class NonPerishableLogistics implements LogisticCalculatorService
+public class NonPerishableLogistics implements LogisticsService
 {
-    private final BaseLogisticCalculator calc = BaseLogisticCalculator.builder()
+    private final BaseLogistics calc = BaseLogistics.builder()
         .smallLogisticPricePerKilogramAndKilometer(PricePerKilogramAndKilometer.of("0.01"))
         .smallLogisticMaxDistance(Kilometer.of(50))
         .biglogisticsMaxDistance(Kilometer.of(50))

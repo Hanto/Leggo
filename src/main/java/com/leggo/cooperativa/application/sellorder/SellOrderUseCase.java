@@ -7,16 +7,16 @@ import com.leggo.cooperativa.domain.model.sellorder.SellOrderLogisticPriced;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrderProductPriced;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrderTaxed;
 import com.leggo.cooperativa.domain.services.InventoryService;
+import com.leggo.cooperativa.domain.services.LogisticsService;
 import com.leggo.cooperativa.domain.services.PriceService;
 import com.leggo.cooperativa.domain.services.TaxService;
-import com.leggo.cooperativa.domain.services.logistics.LogisticCalculatorService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class SellOrderUseCase
 {
     private final PriceService priceService;
-    private final LogisticCalculatorService logistics;
+    private final LogisticsService logistics;
     private final InventoryService inventory;
     private final TaxService taxService;
 

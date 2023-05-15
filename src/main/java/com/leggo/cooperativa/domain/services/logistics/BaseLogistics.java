@@ -7,6 +7,7 @@ import com.leggo.cooperativa.domain.model.common.PricePerKilogramAndKilometer;
 import com.leggo.cooperativa.domain.model.common.PricePerKilometer;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrderLogisticPriced;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrderProductPriced;
+import com.leggo.cooperativa.domain.services.LogisticsService;
 import lombok.Builder;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Builder
-public class BaseLogisticCalculator implements LogisticCalculatorService
+public class BaseLogistics implements LogisticsService
 {
     private final PricePerKilogramAndKilometer smallLogisticPricePerKilogramAndKilometer;
     private final Kilometer smallLogisticMaxDistance;

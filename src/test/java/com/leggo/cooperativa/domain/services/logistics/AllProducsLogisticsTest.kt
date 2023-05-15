@@ -17,7 +17,7 @@ import java.time.LocalDate
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class AllProducsLogisticCalculatorTest
+class AllProducsLogisticsTest
 {
     private val productRepository = InMemoryDatabase()
     private val nonPerishable = NonPerishableLogistics()
@@ -27,7 +27,10 @@ class AllProducsLogisticCalculatorTest
         PerishableProduct::class.java to perishable)
 
     private val underTest =
-        AllProductsLogisticCalculator(map, productRepository)
+        AllProductsLogistics(
+            map,
+            productRepository
+        )
 
     @Test
     fun testNotPerishable()
