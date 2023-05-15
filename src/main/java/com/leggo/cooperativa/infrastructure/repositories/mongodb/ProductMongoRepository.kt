@@ -22,8 +22,7 @@ class ProductMongoRepository
 
     override fun findProductById(productId: ProductId): Optional<Product>
     {
-        val entity = mongo.queryByProductId(productId.id)
-        return entity?.toDomain().let { Optional.ofNullable(it) }
+        return mongo.queryByProductId(productId.id)?.toDomain().let { Optional.ofNullable(it) }
     }
 
     override fun updateProduct(product: Product)
