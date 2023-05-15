@@ -30,6 +30,8 @@ public class SellOrder
 
     public Price getTotalPrice()
     {
-       return productPrice.multiply(quantity).add(logisticsPrice).apply(taxes);
+       return productPrice.multiply(quantity)
+           .add(logisticsPrice)
+           .applyTaxes(taxes);
     }
 }
