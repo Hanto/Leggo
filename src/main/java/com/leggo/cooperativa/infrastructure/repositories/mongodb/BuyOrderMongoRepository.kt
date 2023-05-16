@@ -11,7 +11,9 @@ import com.leggo.cooperativa.domain.model.product.ProductId
 import com.leggo.cooperativa.domain.repositories.BuyOrderRepository
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ContributionEntity
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.FederatedOrderEntity
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.FederatedOrderMongo
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.NonFederatedOrderEntity
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.NonFederatedOrderMongo
 import java.util.Optional
 
 class BuyOrderMongoRepository
@@ -36,25 +38,20 @@ class BuyOrderMongoRepository
         nonFederatedOrderMongo.save(order.toEntity())
     }
 
-    override fun findNonFederatedOrderBy(year: Year, product: ProductId, producerId: ProducerId): Optional<NonFederatedOrder>
+    override fun findNonFederatedOrderBy(year: Year, productId: ProductId, producerId: ProducerId): Optional<NonFederatedOrder>
     {
-        val nonFederatedOrder = nonFederatedOrderMongo.queryByYearAndProducIdAndContributionProducerId(year.amount, product.id, producerId.id)?.toDomain()
+        val nonFederatedOrder = nonFederatedOrderMongo.queryByYearAndProductIdAndContributionProducerId(year.amount, productId.id, producerId.id)?.toDomain()
         return Optional.ofNullable(nonFederatedOrder)
-    }
-
-    override fun findNonFederatedOrderBy(year: Year, producerId: ProducerId, productId: ProductId): Optional<NonFederatedOrder>
-    {
-        TODO("Not yet implemented")
-    }
-
-    override fun numberOfNonFederatedOrdersFrom(year: Year, producerId: ProducerId): Int
-    {
-        TODO("Not yet implemented")
     }
 
     override fun findNonFederatedOrdersBy(year: Year, productId: ProductId): List<NonFederatedOrder>
     {
-        TODO("Not yet implemented")
+        return nonFederatedOrderMongo.queryByYearAndProductId(year.amount, productId.id).map { it.toDomain() }
+    }
+
+    override fun numberOfNonFederatedOrdersFrom(year: Year, producerId: ProducerId): Int
+    {
+        return nonFederatedOrderMongo.countByYearAndContributionProducerId(year.amount, producerId.id)
     }
 
     // ADAPTERS
@@ -93,7 +90,7 @@ class BuyOrderMongoRepository
             buyOrderId = this.buyOrderId.id.toString(),
             year = this.year.amount,
             contribution = ContributionEntity(producerId = this.contributor.producerId.id, kilograms = this.contributor.kilograms.amount),
-            producId = this.productId.id,
+            productId = this.productId.id,
             soldTime = this.soldTime)
 
     private fun NonFederatedOrderEntity.toDomain(): NonFederatedOrder =
@@ -101,6 +98,6 @@ class BuyOrderMongoRepository
             BuyOrderId(this.buyOrderId),
             Year.of(this.year),
             Contribution(ProducerId(this.contribution.producerId), Kilogram.of(this.contribution.kilograms)),
-            ProductId(this.producId),
+            ProductId(this.productId),
             this.soldTime)
 }

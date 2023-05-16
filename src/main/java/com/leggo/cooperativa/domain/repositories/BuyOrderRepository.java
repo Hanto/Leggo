@@ -20,5 +20,4 @@ public interface BuyOrderRepository
     int numberOfNonFederatedOrdersFrom(Year year, ProducerId producerId);
 
     List<NonFederatedOrder> findNonFederatedOrdersBy(Year year, ProductId productId);
-    Optional<NonFederatedOrder>findNonFederatedOrderBy(Year year, ProducerId producerId, ProductId productId);
 }

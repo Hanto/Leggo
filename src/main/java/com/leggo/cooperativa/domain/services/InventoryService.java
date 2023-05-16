@@ -72,7 +72,7 @@ public class InventoryService
             .map(federatedOrder -> federatedOrder.getContributionOf(producerId))
             .orElse(Kilogram.of(0));
 
-        Kilogram fromNonFederatedOrders = buyOrderRepository.findNonFederatedOrderBy(year, producerId,productId)
+        Kilogram fromNonFederatedOrders = buyOrderRepository.findNonFederatedOrderBy(year, productId, producerId)
             .map(NonFederatedOrder::getTotalKilograms)
             .orElse(Kilogram.of(0));
 

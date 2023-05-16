@@ -11,6 +11,6 @@ class NonFederatedOrderEntity
     val buyOrderId: String,
     val year: Int,
     val contribution: ContributionEntity,
-    val producId: String,
+    val productId: String,
     val soldTime: LocalDateTime
 )

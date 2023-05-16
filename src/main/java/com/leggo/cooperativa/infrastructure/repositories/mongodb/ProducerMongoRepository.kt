@@ -10,6 +10,8 @@ import com.leggo.cooperativa.domain.repositories.ProducerRepository
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.FieldEntity
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProducerEntity
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProducerLimitEntity
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProducerLimitEntityMongo
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProducerMongo
 import java.util.Optional
 
 class ProducerMongoRepository

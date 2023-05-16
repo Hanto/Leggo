@@ -9,6 +9,7 @@ import com.leggo.cooperativa.domain.model.product.ProductType
 import com.leggo.cooperativa.domain.repositories.ProductRepository
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.MarketRateEntity
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProductEntity
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProductMongo
 import java.util.Optional
 import java.util.TreeMap
 

@@ -17,13 +17,13 @@ import com.leggo.cooperativa.domain.model.product.Product;
 import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.domain.model.product.ProductType;
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.BuyOrderMongoRepository;
-import com.leggo.cooperativa.infrastructure.repositories.mongodb.FederatedOrderMongo;
-import com.leggo.cooperativa.infrastructure.repositories.mongodb.NonFederatedOrderMongo;
-import com.leggo.cooperativa.infrastructure.repositories.mongodb.ProducerLimitEntityMongo;
-import com.leggo.cooperativa.infrastructure.repositories.mongodb.ProducerMongo;
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.ProducerMongoRepository;
-import com.leggo.cooperativa.infrastructure.repositories.mongodb.ProductMongo;
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.ProductMongoRepository;
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.FederatedOrderMongo;
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.NonFederatedOrderMongo;
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProducerLimitEntityMongo;
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProducerMongo;
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProductMongo;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,15 +43,15 @@ import java.util.List;
 @Testcontainers @SpringBootTest
 class MainTests
 {
-	@Container
-	static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:5.0")
-		.withExposedPorts(27017);
-
 	@Autowired private ProductMongo productMongo;
 	@Autowired private ProducerMongo producerMongo;
 	@Autowired private ProducerLimitEntityMongo producerLimitMongo;
 	@Autowired private FederatedOrderMongo federatedOrderMongo;
 	@Autowired private NonFederatedOrderMongo nonFederatedOrderMongo;
+
+	@Container
+	static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:5.0")
+		.withExposedPorts(27017);
 
 	@Bean
 	public ProductMongoRepository productMongoRepository()
@@ -99,18 +99,28 @@ class MainTests
 			new Contribution(new ProducerId("IVAN"), Kilogram.of(100)),
 			new ProductId("NARANJA"), LocalDateTime.now());
 
+		NonFederatedOrder nonFederatedOrder2 = new NonFederatedOrder(new BuyOrderId(), Year.of(2023),
+			new Contribution(new ProducerId("IVAN"), Kilogram.of(200)),
+			new ProductId("LIMON"), LocalDateTime.now());
+
+		NonFederatedOrder nonFederatedOrder3 = new NonFederatedOrder(new BuyOrderId(), Year.of(2023),
+			new Contribution(new ProducerId("PEPITO"), Kilogram.of(200)),
+			new ProductId("NARANJA"), LocalDateTime.now());
+
 		productRepo.addProduct(product);
 		producerRepo.addProducer(producer);
 		producerRepo.setMaxHectaresForSmallProducer(Year.of(2023), Hectare.of(5));
 		buyOrderRepo.addFederatedOrder(federatedOrder);
 		buyOrderRepo.addNonFederatedOrder(nonFederatedOrder);
+		buyOrderRepo.addNonFederatedOrder(nonFederatedOrder2);
+		buyOrderRepo.addNonFederatedOrder(nonFederatedOrder3);
 
 		System.out.println(productRepo.findProductById(product.getProductId()));
 		System.out.println(producerRepo.findProducerById(producer.getProducerId()));
 		System.out.println(producerRepo.maxHectaresForSmallProducer(Year.of(2023)));
 		System.out.println(buyOrderRepo.findFederatedOrderBy(Year.of(2023), ProductId.of("NARANJA")));
 		System.out.println(buyOrderRepo.findNonFederatedOrderBy(Year.of(2023), ProductId.of("NARANJA"), ProducerId.of("IVAN")));
-
+		System.out.println(buyOrderRepo.numberOfNonFederatedOrdersFrom(Year.of(2023), ProducerId.of("IVAN")));
+		System.out.println(buyOrderRepo.findNonFederatedOrdersBy(Year.of(2023), ProductId.of("NARANJA")));
 	}
-
 }

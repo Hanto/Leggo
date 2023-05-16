@@ -108,12 +108,6 @@ public class InMemoryDatabase implements ProductRepository, ProducerRepository, 
     }
 
     @Override
-    public Optional<NonFederatedOrder>findNonFederatedOrderBy(Year year, ProducerId producerId, ProductId productId)
-    {
-        return nonFederatedOrders.findBy(year, producerId,productId);
-    }
-
-    @Override
     public List<NonFederatedOrder>findNonFederatedOrdersBy(Year year, ProductId productId)
     {
         return nonFederatedOrders.findBy(year, productId);

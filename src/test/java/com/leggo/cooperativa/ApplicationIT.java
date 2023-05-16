@@ -43,6 +43,7 @@ import java.util.Map;
 
 import static com.leggo.cooperativa.domain.model.product.ProductType.NOT_PERISHABLE;
 import static com.leggo.cooperativa.domain.model.product.ProductType.PERISHABLE;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ApplicationIT
 {
@@ -124,6 +125,7 @@ class ApplicationIT
         SellOrder sellOrder = sellOrderUseCase.createSellOrderForMajorist(addSellOrderCommand);
         System.out.println(sellOrder);
         System.out.println(sellOrder.getTotalPriceWithTaxes());
-    }
 
+        assertThat(sellOrder.getTotalPriceWithTaxes().getAmount()).isEqualByComparingTo(new BigDecimal("5824.75"));
+    }
 }

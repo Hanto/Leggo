@@ -1,6 +1,5 @@
-package com.leggo.cooperativa.infrastructure.repositories.mongodb
+package com.leggo.cooperativa.infrastructure.repositories.mongodb.entities
 
-import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProducerEntity
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
