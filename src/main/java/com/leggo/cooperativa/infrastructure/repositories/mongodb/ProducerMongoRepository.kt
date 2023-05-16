@@ -10,14 +10,14 @@ import com.leggo.cooperativa.domain.repositories.ProducerRepository
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.FieldEntity
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProducerEntity
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProducerLimitEntity
-import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProducerLimitEntityMongo
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProducerLimitMongo
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProducerMongo
 import java.util.Optional
 
 class ProducerMongoRepository
 (
     private val producerMongo: ProducerMongo,
-    private val producerLimitEntityMongo: ProducerLimitEntityMongo
+    private val producerLimitMongo: ProducerLimitMongo
 ): ProducerRepository
 {
     override fun addProducer(producer: Producer)
@@ -38,12 +38,12 @@ class ProducerMongoRepository
 
     override fun setMaxHectaresForSmallProducer(year: Year, maxHectares: Hectare)
     {
-        producerLimitEntityMongo.save(ProducerLimitEntity(year.amount, maxHectares.amount))
+        producerLimitMongo.save(ProducerLimitEntity(year.amount, maxHectares.amount))
     }
 
     override fun maxHectaresForSmallProducer(year: Year): Optional<Hectare>
     {
-        val hectare = producerLimitEntityMongo.queryByYear(year.amount)?.maxHectaresForSmallProducer?.let { Hectare.of(it) }
+        val hectare = producerLimitMongo.queryByYear(year.amount)?.maxHectaresForSmallProducer?.let { Hectare.of(it) }
         return Optional.ofNullable(hectare)
     }
 
