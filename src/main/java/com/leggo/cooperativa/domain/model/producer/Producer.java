@@ -15,11 +15,11 @@ public class Producer
 {
     @Getter private final ProducerId producerId;
     @Getter private final String name;
-    private final Map<Year, List<Field>> fieldsByYear = new HashMap<>();
+    @Getter private final Map<Year, List<Field>> fieldsByYear;
 
     public static Producer createProducer(ProducerId id, String name)
     {
-        return new Producer(id, name);
+        return new Producer(id, name, new HashMap<>());
     }
 
     public void createFieldsFor(Year year, List<Field>fields)

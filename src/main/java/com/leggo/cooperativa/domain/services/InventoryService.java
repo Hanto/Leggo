@@ -55,7 +55,7 @@ public class InventoryService
 
     private Kilogram totalKilogramsBought(Year year, ProductId productId)
     {
-        Kilogram fromFederatedOrder = buyOrderRepository.findFederatedOrdersBy(year, productId)
+        Kilogram fromFederatedOrder = buyOrderRepository.findFederatedOrderBy(year, productId)
             .map(FederatedOrder::getTotalKilograms)
             .orElse(Kilogram.of(0));
 
@@ -68,7 +68,7 @@ public class InventoryService
 
     private Kilogram totalKilogramsBoughtFrom(Year year, ProductId productId, ProducerId producerId)
     {
-        Kilogram fromFederatedOrder = buyOrderRepository.findFederatedOrdersBy(year, productId)
+        Kilogram fromFederatedOrder = buyOrderRepository.findFederatedOrderBy(year, productId)
             .map(federatedOrder -> federatedOrder.getContributionOf(producerId))
             .orElse(Kilogram.of(0));
 
