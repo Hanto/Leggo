@@ -7,6 +7,8 @@ import com.leggo.cooperativa.domain.model.product.Product
 import com.leggo.cooperativa.domain.model.product.ProductId
 import com.leggo.cooperativa.domain.model.product.ProductType
 import com.leggo.cooperativa.domain.repositories.ProductRepository
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.MarketRateEntity
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ProductEntity
 import java.util.Optional
 import java.util.TreeMap
 
@@ -22,7 +24,8 @@ class ProductMongoRepository
 
     override fun findProductById(productId: ProductId): Optional<Product>
     {
-        return mongo.queryByProductId(productId.id)?.toDomain().let { Optional.ofNullable(it) }
+        val domain = mongo.queryByProductId(productId.id)?.toDomain()
+        return Optional.ofNullable(domain)
     }
 
     override fun updateProduct(product: Product)

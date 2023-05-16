@@ -9,11 +9,15 @@ import com.leggo.cooperativa.domain.model.common.Year
 import com.leggo.cooperativa.domain.model.producer.ProducerId
 import com.leggo.cooperativa.domain.model.product.ProductId
 import com.leggo.cooperativa.domain.repositories.BuyOrderRepository
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.ContributionEntity
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.FederatedOrderEntity
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.NonFederatedOrderEntity
 import java.util.Optional
 
-class FederatedOrderMongoRepository
+class BuyOrderMongoRepository
 (
-    private val federatedOrderMongo: FederatedOrderMongo
+    private val federatedOrderMongo: FederatedOrderMongo,
+    private val nonFederatedOrderMongo: NonFederatedOrderMongo,
 ) : BuyOrderRepository
 {
     override fun addFederatedOrder(order: FederatedOrder)
@@ -23,18 +27,19 @@ class FederatedOrderMongoRepository
 
     override fun findFederatedOrderBy(year: Year, productId: ProductId): Optional<FederatedOrder>
     {
-        val federatedOrder = federatedOrderMongo.queryByYearAndProductId(year.year, productId.id)?.toDomain()
+        val federatedOrder = federatedOrderMongo.queryByYearAndProductId(year.amount, productId.id)?.toDomain()
         return Optional.ofNullable(federatedOrder)
     }
 
     override fun addNonFederatedOrder(order: NonFederatedOrder)
     {
-        TODO("Not yet implemented")
+        nonFederatedOrderMongo.save(order.toEntity())
     }
 
     override fun findNonFederatedOrderBy(year: Year, product: ProductId, producerId: ProducerId): Optional<NonFederatedOrder>
     {
-        TODO("Not yet implemented")
+        val nonFederatedOrder = nonFederatedOrderMongo.queryByYearAndProducIdAndContributionProducerId(year.amount, product.id, producerId.id)?.toDomain()
+        return Optional.ofNullable(nonFederatedOrder)
     }
 
     override fun findNonFederatedOrderBy(year: Year, producerId: ProducerId, productId: ProductId): Optional<NonFederatedOrder>
@@ -62,7 +67,7 @@ class FederatedOrderMongoRepository
 
         return FederatedOrderEntity(
             buyOrderId = this.buyOrderId.id.toString(),
-            year = this.year.year,
+            year = this.year.amount,
             contributors = contributors,
             productId = this.productId.id,
             soldTime = this.soldTime
@@ -82,4 +87,20 @@ class FederatedOrderMongoRepository
             ProductId(this.productId),
             this.soldTime)
     }
+
+    private fun NonFederatedOrder.toEntity(): NonFederatedOrderEntity =
+        NonFederatedOrderEntity(
+            buyOrderId = this.buyOrderId.id.toString(),
+            year = this.year.amount,
+            contribution = ContributionEntity(producerId = this.contributor.producerId.id, kilograms = this.contributor.kilograms.amount),
+            producId = this.productId.id,
+            soldTime = this.soldTime)
+
+    private fun NonFederatedOrderEntity.toDomain(): NonFederatedOrder =
+        NonFederatedOrder(
+            BuyOrderId(this.buyOrderId),
+            Year.of(this.year),
+            Contribution(ProducerId(this.contribution.producerId), Kilogram.of(this.contribution.kilograms)),
+            ProductId(this.producId),
+            this.soldTime)
 }

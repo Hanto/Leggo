@@ -1,4 +1,4 @@
-package com.leggo.cooperativa.infrastructure.repositories.mongodb
+package com.leggo.cooperativa.infrastructure.repositories.mongodb.entities
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document

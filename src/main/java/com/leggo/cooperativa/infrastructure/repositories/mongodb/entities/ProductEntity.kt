@@ -1,4 +1,4 @@
-package com.leggo.cooperativa.infrastructure.repositories.mongodb
+package com.leggo.cooperativa.infrastructure.repositories.mongodb.entities
 
 import java.math.BigDecimal
 import java.time.LocalDate

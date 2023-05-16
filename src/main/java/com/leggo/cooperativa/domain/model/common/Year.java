@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class Year implements Comparable<Year>
 {
-    private final Integer year;
+    private final Integer amount;
 
     public static Year of(Integer year)
     {
@@ -15,6 +15,6 @@ public class Year implements Comparable<Year>
     @Override
     public int compareTo(Year o)
     {
-        return year.compareTo(o.year);
+        return amount.compareTo(o.amount);
     }
 }

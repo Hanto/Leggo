@@ -3,6 +3,7 @@ package com.leggo.cooperativa;
 import com.leggo.cooperativa.domain.model.buyorder.BuyOrderId;
 import com.leggo.cooperativa.domain.model.buyorder.Contribution;
 import com.leggo.cooperativa.domain.model.buyorder.FederatedOrder;
+import com.leggo.cooperativa.domain.model.buyorder.NonFederatedOrder;
 import com.leggo.cooperativa.domain.model.common.Hectare;
 import com.leggo.cooperativa.domain.model.common.Kilogram;
 import com.leggo.cooperativa.domain.model.common.KilogramsPerHectare;
@@ -15,8 +16,9 @@ import com.leggo.cooperativa.domain.model.product.MarketRate;
 import com.leggo.cooperativa.domain.model.product.Product;
 import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.domain.model.product.ProductType;
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.BuyOrderMongoRepository;
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.FederatedOrderMongo;
-import com.leggo.cooperativa.infrastructure.repositories.mongodb.FederatedOrderMongoRepository;
+import com.leggo.cooperativa.infrastructure.repositories.mongodb.NonFederatedOrderMongo;
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.ProducerLimitEntityMongo;
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.ProducerMongo;
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.ProducerMongoRepository;
@@ -49,6 +51,7 @@ class MainTests
 	@Autowired private ProducerMongo producerMongo;
 	@Autowired private ProducerLimitEntityMongo producerLimitMongo;
 	@Autowired private FederatedOrderMongo federatedOrderMongo;
+	@Autowired private NonFederatedOrderMongo nonFederatedOrderMongo;
 
 	@Bean
 	public ProductMongoRepository productMongoRepository()
@@ -73,7 +76,7 @@ class MainTests
 	{
 		ProductMongoRepository productRepo = new ProductMongoRepository(productMongo);
 		ProducerMongoRepository producerRepo = new ProducerMongoRepository(producerMongo, producerLimitMongo);
-		FederatedOrderMongoRepository federatedOrderRepo = new FederatedOrderMongoRepository(federatedOrderMongo);
+		BuyOrderMongoRepository buyOrderRepo = new BuyOrderMongoRepository(federatedOrderMongo, nonFederatedOrderMongo);
 
 		Product product = new Product(
 			ProductId.of("NARANJA"), "naranja", KilogramsPerHectare.of(200),
@@ -92,16 +95,22 @@ class MainTests
 				new Contribution(new ProducerId("PEPITO"), Kilogram.of(100)))),
 			new ProductId("NARANJA"), LocalDateTime.now());
 
+		NonFederatedOrder nonFederatedOrder = new NonFederatedOrder(new BuyOrderId(), Year.of(2023),
+			new Contribution(new ProducerId("IVAN"), Kilogram.of(100)),
+			new ProductId("NARANJA"), LocalDateTime.now());
+
 		productRepo.addProduct(product);
 		producerRepo.addProducer(producer);
 		producerRepo.setMaxHectaresForSmallProducer(Year.of(2023), Hectare.of(5));
-		federatedOrderRepo.addFederatedOrder(federatedOrder);
-
+		buyOrderRepo.addFederatedOrder(federatedOrder);
+		buyOrderRepo.addNonFederatedOrder(nonFederatedOrder);
 
 		System.out.println(productRepo.findProductById(product.getProductId()));
 		System.out.println(producerRepo.findProducerById(producer.getProducerId()));
 		System.out.println(producerRepo.maxHectaresForSmallProducer(Year.of(2023)));
-		System.out.println(federatedOrderRepo.findFederatedOrderBy(Year.of(2023), ProductId.of("NARANJA")));
+		System.out.println(buyOrderRepo.findFederatedOrderBy(Year.of(2023), ProductId.of("NARANJA")));
+		System.out.println(buyOrderRepo.findNonFederatedOrderBy(Year.of(2023), ProductId.of("NARANJA"), ProducerId.of("IVAN")));
+
 	}
 
 }
