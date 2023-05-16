@@ -17,20 +17,20 @@ import java.time.LocalDate;
 @RequiredArgsConstructor @Getter @ToString @Builder
 public class SellOrder
 {
-    private final SellOrderId id;
+    private final SellOrderId sellOrderId;
     private final Year yearOfHarvest;
     private final ProductId productId;
     private final Kilogram quantity;
     private final LocalDate marketRateDay;
     private final Kilometer distance;
 
-    private final PricePerKilogram productPrice;
+    private final PricePerKilogram pricePerKilogram;
     private final Price logisticsPrice;
     private final Tax taxes;
 
     public Price getTotalPriceWithTaxes()
     {
-       return productPrice.multiply(quantity)
+       return pricePerKilogram.multiply(quantity)
            .add(logisticsPrice)
            .applyTaxes(taxes);
     }

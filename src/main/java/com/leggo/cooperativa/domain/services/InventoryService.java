@@ -89,13 +89,13 @@ public class InventoryService
     private static SellOrder buildSellOrder(SellOrderTaxed orderDemand)
     {
         return SellOrder.builder()
-            .id(new SellOrderId())
+            .sellOrderId(new SellOrderId())
             .yearOfHarvest(orderDemand.getYearOfHarvest())
             .productId(orderDemand.getProductId())
             .quantity(orderDemand.getQuantity())
             .marketRateDay(orderDemand.getMarketRateDay())
             .distance(orderDemand.getDistance())
-            .productPrice(orderDemand.getProductPrice())
+            .pricePerKilogram(orderDemand.getProductPrice())
             .logisticsPrice(orderDemand.getLogisticsPrice())
             .taxes(orderDemand.getTaxes())
             .build();
