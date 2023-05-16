@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 @ConditionalOnProperty(prefix = "spring.data.mongodb", name = ["uri"])
-interface ProducerLimitEntityMongo : MongoRepository<ProducerLimitEntity, Int>
+interface ProducerLimitMongo : MongoRepository<ProducerLimitEntity, Int>
 {
     fun queryByYear(year: Int): ProducerLimitEntity?
 }
