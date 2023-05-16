@@ -25,7 +25,6 @@ import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.Produc
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.SellOrderMongo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,37 +35,45 @@ import static com.leggo.cooperativa.domain.model.product.ProductType.PERISHABLE;
 @Configuration
 class BeanConfigurationTest
 {
-    // MONGODB
-    //--------------------------------------------------------------------------------------------------------
-
-    @Bean @Primary
-    public ProductMongoRepository productMongoRepositoryTest(ProductMongo productMongo)
-    {
-        return new ProductMongoRepository(productMongo);
-    }
-
-    @Bean @Primary
-    public ProducerMongoRepository producerMongoRepositoryTest(ProducerMongo producerMongo, ProducerLimitMongo producerLimitMongo)
-    {
-        return new ProducerMongoRepository(producerMongo, producerLimitMongo);
-    }
-
-    @Bean @Primary
-    public BuyOrderMongoRepository buyOrderMongoRepositoryTest(FederatedOrderMongo federatedOrderMongo, NonFederatedOrderMongo nonFederatedOrderMongo)
-    {
-        return new BuyOrderMongoRepository(federatedOrderMongo, nonFederatedOrderMongo);
-    }
-
-    @Bean @Primary
-    public SellOrderMongoRepository sellOrderMongoRepositoryTestTest(SellOrderMongo sellOrderMongo)
-    {
-        return new SellOrderMongoRepository(sellOrderMongo);
-    }
-
     // MAIN
     //--------------------------------------------------------------------------------------------------------
 
-    @Bean @Primary
+    @Bean
+    public ProductUseCase productUseCaseTest(
+        ProductMongoRepository productMongoRepositoryTest)
+    {
+        return new ProductUseCase(productMongoRepositoryTest);
+    }
+
+    @Bean
+    public ProducerUseCase producerUseCaseTest(
+        ProductMongoRepository productMongoRepositoryTest,
+        ProducerMongoRepository producerMongoRepositoryTest)
+    {
+        return new ProducerUseCase(producerMongoRepositoryTest, productMongoRepositoryTest);
+    }
+
+    @Bean
+    public BuyOrderUSeCase buyOrderUSeCaseTest(
+        ProductMongoRepository productMongoRepositoryTest,
+        ProducerMongoRepository producerMongoRepositoryTest,
+        BuyOrderValidator buyOrderValidatorTest,
+        InventoryService inventoryServiceTest)
+    {
+        return new BuyOrderUSeCase(productMongoRepositoryTest, producerMongoRepositoryTest, inventoryServiceTest, buyOrderValidatorTest);
+    }
+
+    @Bean
+    public SellOrderUseCase sellOrderUseCaseTest(
+        PriceService priceServiceTest,
+        AllProductsLogistics allProductsLogisticsTest,
+        InventoryService inventoryServiceTest,
+        TaxService taxServiceTest)
+    {
+        return new SellOrderUseCase(priceServiceTest, allProductsLogisticsTest, inventoryServiceTest, taxServiceTest);
+    }
+
+    @Bean
     public BuyOrderValidator buyOrderValidatorTest(
         ProductMongoRepository productMongoRepositoryTest,
         BuyOrderMongoRepository buyOrderMongoRepositoryTest,
@@ -75,41 +82,16 @@ class BeanConfigurationTest
         return new BuyOrderValidator(productMongoRepositoryTest, buyOrderMongoRepositoryTest, producerMongoRepositoryTest);
     }
 
-    @Bean @Primary
-    public BuyOrderUSeCase buyOrderUSeCaseTest(
-        ProductMongoRepository productMongoRepositoryTest,
-        ProducerMongoRepository producerMongoRepositoryTest,
-        BuyOrderValidator validator,
-        InventoryService inventoryService)
-    {
-        return new BuyOrderUSeCase(productMongoRepositoryTest, producerMongoRepositoryTest, inventoryService, validator);
-    }
-
-    @Bean @Primary
-    public ProductUseCase productUseCaseTest(
-        ProductMongoRepository productMongoRepositoryTest)
-    {
-        return new ProductUseCase(productMongoRepositoryTest);
-    }
-
-    @Bean @Primary
-    public ProducerUseCase producerUseCaseTest(
-        ProductMongoRepository productMongoRepositoryTest,
-        ProducerMongoRepository producerMongoRepositoryTest)
-    {
-        return new ProducerUseCase(producerMongoRepositoryTest, productMongoRepositoryTest);
-    }
-
-    @Bean @Primary
-    public InventoryService inventoryUseCaseTest(
+    @Bean
+    public InventoryService inventoryServiceTest(
         BuyOrderMongoRepository buyOrderMongoRepositoryTest,
         SellOrderMongoRepository sellOrderMongoRepositoryTest)
     {
         return new InventoryService(buyOrderMongoRepositoryTest, sellOrderMongoRepositoryTest);
     }
 
-    @Bean @Primary
-    public AllProductsLogistics allProductsLogisticCalculatorTest(
+    @Bean
+    public AllProductsLogistics allProductsLogisticsTest(
         ProductMongoRepository productMongoRepositoryTest)
     {
         Map<ProductType, LogisticsService>maps = new HashMap<>();
@@ -119,26 +101,43 @@ class BeanConfigurationTest
         return new AllProductsLogistics(maps, productMongoRepositoryTest);
     }
 
-    @Bean @Primary
+    @Bean
     public PriceService priceServiceTest(
         ProductMongoRepository productMongoRepositoryTest)
     {
         return new PriceService(productMongoRepositoryTest);
     }
 
-    @Bean @Primary
+    @Bean
     public TaxService taxServiceTest()
     {
         return new TaxService();
     }
 
-    @Bean @Primary
-    public SellOrderUseCase sellOrderUseCaseTest(
-        PriceService priceServiceTest,
-        LogisticsService logisticsServiceTest,
-        InventoryService inventoryServiceTest,
-        TaxService taxServiceTest)
+    // MONGODB
+    //--------------------------------------------------------------------------------------------------------
+
+    @Bean
+    public ProductMongoRepository productMongoRepositoryTest(ProductMongo productMongo)
     {
-        return new SellOrderUseCase(priceServiceTest, logisticsServiceTest, inventoryServiceTest, taxServiceTest);
+        return new ProductMongoRepository(productMongo);
+    }
+
+    @Bean
+    public ProducerMongoRepository producerMongoRepositoryTest(ProducerMongo producerMongo, ProducerLimitMongo producerLimitMongo)
+    {
+        return new ProducerMongoRepository(producerMongo, producerLimitMongo);
+    }
+
+    @Bean
+    public BuyOrderMongoRepository buyOrderMongoRepositoryTest(FederatedOrderMongo federatedOrderMongo, NonFederatedOrderMongo nonFederatedOrderMongo)
+    {
+        return new BuyOrderMongoRepository(federatedOrderMongo, nonFederatedOrderMongo);
+    }
+
+    @Bean
+    public SellOrderMongoRepository sellOrderMongoRepositoryTestTest(SellOrderMongo sellOrderMongo)
+    {
+        return new SellOrderMongoRepository(sellOrderMongo);
     }
 }

@@ -27,24 +27,6 @@ import static com.leggo.cooperativa.domain.model.product.ProductType.PERISHABLE;
 public class BeanConfiguration
 {
     @Bean
-    public InMemoryDatabase database()
-    {
-        return new InMemoryDatabase();
-    }
-
-    @Bean
-    public BuyOrderValidator buyOrderValidator(InMemoryDatabase database)
-    {
-        return new BuyOrderValidator(database, database, database);
-    }
-
-    @Bean
-    public BuyOrderUSeCase buyOrderUSeCase(InMemoryDatabase database, BuyOrderValidator validator, InventoryService inventoryService)
-    {
-        return new BuyOrderUSeCase(database, database, inventoryService, validator);
-    }
-
-    @Bean
     public ProductUseCase productUseCase(InMemoryDatabase database)
     {
         return new ProductUseCase(database);
@@ -57,25 +39,45 @@ public class BeanConfiguration
     }
 
     @Bean
-    public InventoryService inventoryUseCase(InMemoryDatabase database)
+    public BuyOrderUSeCase buyOrderUSeCase(
+        InMemoryDatabase database,
+        BuyOrderValidator buyOrderValidator,
+        InventoryService inventoryService)
+    {
+        return new BuyOrderUSeCase(database, database, inventoryService, buyOrderValidator);
+    }
+
+    @Bean
+    public SellOrderUseCase sellOrderUseCase(
+        PriceService priceService,
+        AllProductsLogistics allProductsLogistics,
+        InventoryService inventoryService,
+        TaxService taxService)
+    {
+        return new SellOrderUseCase(priceService, allProductsLogistics, inventoryService, taxService);
+    }
+
+    @Bean
+    public BuyOrderValidator buyOrderValidator(InMemoryDatabase database)
+    {
+        return new BuyOrderValidator(database, database, database);
+    }
+
+
+    @Bean
+    public InventoryService inventoryService(InMemoryDatabase database)
     {
         return new InventoryService(database, database);
     }
 
     @Bean
-    public Map<ProductType, LogisticsService>logisticCalculators()
+    public AllProductsLogistics allProductsLogistics(InMemoryDatabase database)
     {
         Map<ProductType, LogisticsService>maps = new HashMap<>();
         maps.put(PERISHABLE, new PerishableLogistics());
         maps.put(NOT_PERISHABLE, new NonPerishableLogistics());
-        return maps;
-    }
 
-    @Bean
-    public AllProductsLogistics allProductsLogisticCalculator(
-        Map<ProductType, LogisticsService> logisticCalculators, InMemoryDatabase database)
-    {
-        return new AllProductsLogistics(logisticCalculators, database);
+        return new AllProductsLogistics(maps, database);
     }
 
     @Bean
@@ -90,10 +92,12 @@ public class BeanConfiguration
         return new TaxService();
     }
 
+    // INMEMORY
+    //--------------------------------------------------------------------------------------------------------
+
     @Bean
-    public SellOrderUseCase sellOrderUseCase(PriceService priceService, LogisticsService logisticsService,
-        InventoryService inventoryService, TaxService taxService)
+    public InMemoryDatabase database()
     {
-        return new SellOrderUseCase(priceService, logisticsService, inventoryService, taxService);
+        return new InMemoryDatabase();
     }
 }
