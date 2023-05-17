@@ -1,4 +1,4 @@
-package com.leggo.cooperativa.infrastructure.repositories;
+package com.leggo.cooperativa.infrastructure.repositories.memory;
 
 import com.leggo.cooperativa.domain.model.buyorder.FederatedOrder;
 import com.leggo.cooperativa.domain.model.common.Year;

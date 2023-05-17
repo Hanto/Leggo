@@ -1,4 +1,4 @@
-package com.leggo.cooperativa.infrastructure.repositories;
+package com.leggo.cooperativa.infrastructure.repositories.memory;
 
 import com.leggo.cooperativa.domain.model.buyorder.FederatedOrder;
 import com.leggo.cooperativa.domain.model.buyorder.NonFederatedOrder;
@@ -105,18 +105,6 @@ public class InMemoryDatabase implements ProductRepository, ProducerRepository, 
     public int numberOfNonFederatedOrdersFrom(Year year, ProducerId producerId)
     {
         return nonFederatedOrders.findBy(year, producerId).size();
-    }
-
-    @Override
-    public Optional<FederatedOrder>findFederatedOrdersBy(Year year, ProductId productId)
-    {
-        return federatedOrders.findBy(year, productId);
-    }
-
-    @Override
-    public Optional<NonFederatedOrder>findNonFederatedOrderBy(Year year, ProducerId producerId, ProductId productId)
-    {
-        return nonFederatedOrders.findBy(year, producerId,productId);
     }
 
     @Override

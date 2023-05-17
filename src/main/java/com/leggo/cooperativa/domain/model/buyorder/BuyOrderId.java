@@ -13,4 +13,8 @@ public class BuyOrderId
     {
         id = UUID.randomUUID();
     }
+    public BuyOrderId(String uuid)
+    {
+        id = UUID.fromString(uuid);
+    }
 }

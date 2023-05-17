@@ -20,10 +20,8 @@ import com.leggo.cooperativa.domain.model.common.Kilometer;
 import com.leggo.cooperativa.domain.model.common.PricePerKilogram;
 import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
-import com.leggo.cooperativa.domain.model.product.NonPerishableProduct;
-import com.leggo.cooperativa.domain.model.product.PerishableProduct;
-import com.leggo.cooperativa.domain.model.product.Product;
 import com.leggo.cooperativa.domain.model.product.ProductId;
+import com.leggo.cooperativa.domain.model.product.ProductType;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrder;
 import com.leggo.cooperativa.domain.services.InventoryService;
 import com.leggo.cooperativa.domain.services.LogisticsService;
@@ -32,7 +30,7 @@ import com.leggo.cooperativa.domain.services.TaxService;
 import com.leggo.cooperativa.domain.services.logistics.AllProductsLogistics;
 import com.leggo.cooperativa.domain.services.logistics.NonPerishableLogistics;
 import com.leggo.cooperativa.domain.services.logistics.PerishableLogistics;
-import com.leggo.cooperativa.infrastructure.repositories.InMemoryDatabase;
+import com.leggo.cooperativa.infrastructure.repositories.memory.InMemoryDatabase;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -43,7 +41,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import static com.leggo.cooperativa.domain.model.product.ProductType.NOT_PERISHABLE;
 import static com.leggo.cooperativa.domain.model.product.ProductType.PERISHABLE;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ApplicationIT
 {
@@ -54,10 +54,10 @@ class ApplicationIT
     private final ProductUseCase productUseCase = new ProductUseCase(database);
     private final ProducerUseCase producerUseCase = new ProducerUseCase(database, database);
     private final PriceService priceService = new PriceService(database);
-    private final Map<Class<? extends Product>, LogisticsService>map = new HashMap<>()
+    private final Map<ProductType, LogisticsService>map = new HashMap<>()
     {{
-        put(PerishableProduct.class, new PerishableLogistics());
-        put(NonPerishableProduct.class, new NonPerishableLogistics());
+        put(PERISHABLE, new PerishableLogistics());
+        put(NOT_PERISHABLE, new NonPerishableLogistics());
     }};
     private final LogisticsService logisticsService = new AllProductsLogistics(map, database);
     private final TaxService taxService = new TaxService();
@@ -125,6 +125,7 @@ class ApplicationIT
         SellOrder sellOrder = sellOrderUseCase.createSellOrderForMajorist(addSellOrderCommand);
         System.out.println(sellOrder);
         System.out.println(sellOrder.getTotalPriceWithTaxes());
-    }
 
+        assertThat(sellOrder.getTotalPriceWithTaxes().getAmount()).isEqualByComparingTo(new BigDecimal("5824.75"));
+    }
 }

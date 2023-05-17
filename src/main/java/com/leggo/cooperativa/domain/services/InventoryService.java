@@ -55,7 +55,7 @@ public class InventoryService
 
     private Kilogram totalKilogramsBought(Year year, ProductId productId)
     {
-        Kilogram fromFederatedOrder = buyOrderRepository.findFederatedOrdersBy(year, productId)
+        Kilogram fromFederatedOrder = buyOrderRepository.findFederatedOrderBy(year, productId)
             .map(FederatedOrder::getTotalKilograms)
             .orElse(Kilogram.of(0));
 
@@ -68,11 +68,11 @@ public class InventoryService
 
     private Kilogram totalKilogramsBoughtFrom(Year year, ProductId productId, ProducerId producerId)
     {
-        Kilogram fromFederatedOrder = buyOrderRepository.findFederatedOrdersBy(year, productId)
+        Kilogram fromFederatedOrder = buyOrderRepository.findFederatedOrderBy(year, productId)
             .map(federatedOrder -> federatedOrder.getContributionOf(producerId))
             .orElse(Kilogram.of(0));
 
-        Kilogram fromNonFederatedOrders = buyOrderRepository.findNonFederatedOrderBy(year, producerId,productId)
+        Kilogram fromNonFederatedOrders = buyOrderRepository.findNonFederatedOrderBy(year, productId, producerId)
             .map(NonFederatedOrder::getTotalKilograms)
             .orElse(Kilogram.of(0));
 
@@ -89,13 +89,13 @@ public class InventoryService
     private static SellOrder buildSellOrder(SellOrderTaxed orderDemand)
     {
         return SellOrder.builder()
-            .id(new SellOrderId())
+            .sellOrderId(new SellOrderId())
             .yearOfHarvest(orderDemand.getYearOfHarvest())
             .productId(orderDemand.getProductId())
             .quantity(orderDemand.getQuantity())
             .marketRateDay(orderDemand.getMarketRateDay())
             .distance(orderDemand.getDistance())
-            .productPrice(orderDemand.getProductPrice())
+            .pricePerKilogram(orderDemand.getProductPrice())
             .logisticsPrice(orderDemand.getLogisticsPrice())
             .taxes(orderDemand.getTaxes())
             .build();

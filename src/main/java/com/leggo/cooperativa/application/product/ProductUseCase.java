@@ -1,5 +1,6 @@
 package com.leggo.cooperativa.application.product;
 
+import com.leggo.cooperativa.domain.model.product.MarketRate;
 import com.leggo.cooperativa.domain.model.product.Product;
 import com.leggo.cooperativa.domain.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,8 @@ public class ProductUseCase
         if (maybeProduct.isPresent())
             throw new IllegalArgumentException(String.format("the product: %s, already exists", command.getProductId()));
 
-        Product product = command.getProductType().createProduct(command.getProductId(), command.getProductName(), command.getKilogramsPerHectare(), command.getInitialPricePerKilogram());
+        Product product = new Product(command.getProductId(), command.getProductName(), command.getKilogramsPerHectare(),
+            new MarketRate(command.getInitialPricePerKilogram()), command.getProductType());
 
         productRepository.addProduct(product);
     }

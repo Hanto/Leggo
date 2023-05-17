@@ -13,5 +13,9 @@ public class SellOrderId
     {
         id = UUID.randomUUID();
     }
+    public SellOrderId(String uuid)
+    {
+        id = UUID.fromString(uuid);
+    }
 
 }
