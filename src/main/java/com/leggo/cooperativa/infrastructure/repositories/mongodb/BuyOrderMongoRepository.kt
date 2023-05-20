@@ -78,7 +78,7 @@ class BuyOrderMongoRepository
             .toSet()
 
         return FederatedOrder(
-            BuyOrderId(this.buyOrderId),
+            BuyOrderId.of(this.buyOrderId),
             Year.of(this.year),
             contributors,
             ProductId(this.productId),
@@ -95,7 +95,7 @@ class BuyOrderMongoRepository
 
     private fun NonFederatedOrderEntity.toDomain(): NonFederatedOrder =
         NonFederatedOrder(
-            BuyOrderId(this.buyOrderId),
+            BuyOrderId.of(this.buyOrderId),
             Year.of(this.year),
             Contribution(ProducerId(this.contribution.producerId), Kilogram.of(this.contribution.kilograms)),
             ProductId(this.productId),

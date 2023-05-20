@@ -13,6 +13,7 @@ import com.leggo.cooperativa.application.product.CreateProductCommand;
 import com.leggo.cooperativa.application.product.ProductUseCase;
 import com.leggo.cooperativa.application.sellorder.AddSellOrderCommand;
 import com.leggo.cooperativa.application.sellorder.SellOrderUseCase;
+import com.leggo.cooperativa.domain.model.buyorder.BuyOrderId;
 import com.leggo.cooperativa.domain.model.common.Hectare;
 import com.leggo.cooperativa.domain.model.common.Kilogram;
 import com.leggo.cooperativa.domain.model.common.KilogramsPerHectare;
@@ -40,6 +41,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.leggo.cooperativa.domain.model.product.ProductType.NOT_PERISHABLE;
 import static com.leggo.cooperativa.domain.model.product.ProductType.PERISHABLE;
@@ -101,6 +103,7 @@ class ApplicationIT
         producerUseCase.setHectareLimitFor(new Year(2024), Hectare.of(5));
 
         CreatedFederatedOrderCommand pepitoJuanitoSellers = new CreatedFederatedOrderCommand(
+            new BuyOrderId(UUID.randomUUID()),
             new HashSet<>(Arrays.asList(new ProducerId("PEPITO"), new ProducerId("JUANITO"))),
             new ProductId("NARANJA"),
             new Year(2023) );
@@ -108,6 +111,7 @@ class ApplicationIT
         buyOrderUSeCase.createFederatedOrder(pepitoJuanitoSellers);
 
         CreateNonFederatedOrderCommand pepitoSeller = new CreateNonFederatedOrderCommand(
+            new BuyOrderId(UUID.randomUUID()),
             new Year(2023),
             new ProducerId("PEPITO"),
             new ProductId("LIMON") );

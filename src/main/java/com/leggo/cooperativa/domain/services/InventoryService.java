@@ -13,6 +13,8 @@ import com.leggo.cooperativa.domain.repositories.BuyOrderRepository;
 import com.leggo.cooperativa.domain.repositories.SellOrderRepository;
 import lombok.AllArgsConstructor;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 public class InventoryService
 {
@@ -99,5 +101,10 @@ public class InventoryService
             .logisticsPrice(orderDemand.getLogisticsPrice())
             .taxes(orderDemand.getTaxes())
             .build();
+    }
+
+    public static void main(String...args)
+    {
+        System.out.println(UUID.randomUUID());
     }
 }

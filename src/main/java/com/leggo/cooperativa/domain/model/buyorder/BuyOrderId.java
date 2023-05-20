@@ -9,12 +9,12 @@ public class BuyOrderId
 {
     private final UUID id;
 
-    public BuyOrderId()
+    public BuyOrderId(UUID uuid)
     {
-        id = UUID.randomUUID();
+        id = uuid;
     }
-    public BuyOrderId(String uuid)
+    public static BuyOrderId of(String uuid)
     {
-        id = UUID.fromString(uuid);
+        return new BuyOrderId(UUID.fromString(uuid));
     }
 }

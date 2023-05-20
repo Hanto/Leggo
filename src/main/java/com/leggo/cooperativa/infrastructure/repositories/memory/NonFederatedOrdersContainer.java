@@ -13,12 +13,12 @@ import java.util.Optional;
 
 public class NonFederatedOrdersContainer
 {
-    private final Map<Year, Map<ProducerId, List<NonFederatedOrder>>> rootMap = new HashMap<>();
-    private final Map<Year, Map<ProductId, List<NonFederatedOrder>>>rootMapByProduct = new HashMap<>();
+    private final Map<Year, Map<ProducerId, List<NonFederatedOrder>>> rootMapByProducer = new HashMap<>();
+    private final Map<Year, Map<ProductId, List<NonFederatedOrder>>> rootMapByProduct = new HashMap<>();
 
     public void add(NonFederatedOrder seller)
     {
-        Map<ProducerId, List<NonFederatedOrder>>innerMap = rootMap.computeIfAbsent(seller.getYear(), year -> new HashMap<>());
+        Map<ProducerId, List<NonFederatedOrder>>innerMap = rootMapByProducer.computeIfAbsent(seller.getYear(), year -> new HashMap<>());
         List<NonFederatedOrder>list = innerMap.computeIfAbsent(seller.getContributor().getProducerId(), producerId -> new ArrayList<>());
         list.add(seller);
 
@@ -29,7 +29,7 @@ public class NonFederatedOrdersContainer
 
     public Optional<NonFederatedOrder> findBy(Year year, ProducerId producerId, ProductId productId)
     {
-        Map<ProducerId, List<NonFederatedOrder>>innerMap = rootMap.get(year);
+        Map<ProducerId, List<NonFederatedOrder>>innerMap = rootMapByProducer.get(year);
 
         List<NonFederatedOrder>sellers = innerMap != null ?
             innerMap.getOrDefault(producerId, List.of()) :
@@ -42,7 +42,7 @@ public class NonFederatedOrdersContainer
 
     public List<NonFederatedOrder>findBy(Year year, ProducerId producerId)
     {
-        Map<ProducerId, List<NonFederatedOrder>>innerMap = rootMap.get(year);
+        Map<ProducerId, List<NonFederatedOrder>>innerMap = rootMapByProducer.get(year);
 
         return innerMap != null ?
             innerMap.getOrDefault(producerId, List.of()) :

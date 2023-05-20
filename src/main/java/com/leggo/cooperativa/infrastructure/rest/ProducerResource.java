@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController @RequestMapping(value = "/api")
 @RequiredArgsConstructor
-public class ProducerController
+public class ProducerResource
 {
     private final ProducerUseCase producerUseCase;
 

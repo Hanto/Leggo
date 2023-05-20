@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController @RequestMapping(value = "/api")
 @RequiredArgsConstructor
-public class ProductController
+public class ProductResource
 {
     private final ProductUseCase productUseCase;
 

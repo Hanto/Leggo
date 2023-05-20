@@ -122,6 +122,7 @@ POST http://{{serveraddress}}/api/buyorder/nonfedered
 Content-Type: application/json
 
 {
+  "buyOrderUUID": "9edc0689-16f4-4319-ad95-3a8ace029876",
   "year": 2023,
   "producerId": "PEPITO",
   "productId": "NARANJA"
@@ -131,6 +132,7 @@ POST http://{{serveraddress}}/api/buyorder/federed
 Content-Type: application/json
 
 {
+  "buyOrderUUID": "de0e186e-ceaa-4a9d-b5a4-fb2286048181",
   "year": 2023,
   "producerIds": ["PEPITO", "JUANITO"],
   "productId": "NARANJA"

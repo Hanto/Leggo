@@ -29,6 +29,7 @@ import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.Produc
 import com.leggo.cooperativa.infrastructure.repositories.mongodb.entities.SellOrderMongo
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.UUID
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -78,20 +79,20 @@ class MongoDbTests
         val producer = Producer.createProducer(ProducerId("IVAN"), "ivan")
         producer.createFieldsFor(Year.of(2023), fields)
 
-        val federatedOrder = FederatedOrder(BuyOrderId(), Year.of(2023), setOf(
+        val federatedOrder = FederatedOrder(BuyOrderId(UUID.randomUUID()), Year.of(2023), setOf(
                 Contribution(ProducerId("IVAN"), Kilogram.of(200.0)),
                 Contribution(ProducerId("PEPITO"), Kilogram.of(100.0))),
             ProductId("NARANJA"), LocalDateTime.now())
 
-        val nonFederatedOrder = NonFederatedOrder(BuyOrderId(), Year.of(2023),
+        val nonFederatedOrder = NonFederatedOrder(BuyOrderId(UUID.randomUUID()), Year.of(2023),
             Contribution(ProducerId("IVAN"), Kilogram.of(100.0)),
             ProductId("NARANJA"), LocalDateTime.now())
 
-        val nonFederatedOrder2 = NonFederatedOrder(BuyOrderId(), Year.of(2023),
+        val nonFederatedOrder2 = NonFederatedOrder(BuyOrderId(UUID.randomUUID()), Year.of(2023),
             Contribution(ProducerId("IVAN"), Kilogram.of(200.0)),
             ProductId("LIMON"), LocalDateTime.now())
 
-        val nonFederatedOrder3 = NonFederatedOrder(BuyOrderId(), Year.of(2023),
+        val nonFederatedOrder3 = NonFederatedOrder(BuyOrderId(UUID.randomUUID()), Year.of(2023),
             Contribution(ProducerId("PEPITO"), Kilogram.of(200.0)),
             ProductId("NARANJA"), LocalDateTime.now())
 
