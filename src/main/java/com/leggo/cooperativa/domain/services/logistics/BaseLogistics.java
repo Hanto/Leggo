@@ -39,6 +39,7 @@ public class BaseLogistics implements LogisticsService
         Price logisticsPrice = bigLogisticPrice.add(smallLogisticPrice);
 
         return SellOrderLogisticPriced.builder()
+            .sellOrderId(order.getSellOrderId())
             .yearOfHarvest(order.getYearOfHarvest())
             .productId(order.getProductId())
             .quantity(order.getQuantity())

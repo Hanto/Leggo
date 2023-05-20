@@ -10,6 +10,7 @@ public class TaxService
     public SellOrderTaxed applyCorrectTax(SellOrderLogisticPriced order)
     {
         return SellOrderTaxed.builder()
+            .sellOrderId(order.getSellOrderId())
             .yearOfHarvest(order.getYearOfHarvest())
             .productId(order.getProductId())
             .productPrice(order.getProductPrice())

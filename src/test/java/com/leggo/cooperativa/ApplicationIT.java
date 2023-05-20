@@ -24,6 +24,7 @@ import com.leggo.cooperativa.domain.model.producer.ProducerId;
 import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.domain.model.product.ProductType;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrder;
+import com.leggo.cooperativa.domain.model.sellorder.SellOrderId;
 import com.leggo.cooperativa.domain.services.InventoryService;
 import com.leggo.cooperativa.domain.services.LogisticsService;
 import com.leggo.cooperativa.domain.services.PriceService;
@@ -119,6 +120,7 @@ class ApplicationIT
         buyOrderUSeCase.createNonFederatedOrder(pepitoSeller);
 
         AddSellOrderCommand addSellOrderCommand = AddSellOrderCommand.builder()
+            .sellOrderId(new SellOrderId(UUID.randomUUID()))
             .yearOfHavest(Year.of(2023))
             .productId(ProductId.of("NARANJA"))
             .quantity(Kilogram.of(1200))

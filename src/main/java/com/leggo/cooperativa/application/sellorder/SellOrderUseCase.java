@@ -49,6 +49,7 @@ public class SellOrderUseCase
     private SellOrderDemanded buildDemand(AddSellOrderCommand command)
     {
         return SellOrderDemanded.builder()
+            .sellOrderId(command.getSellOrderId())
             .yearOfHarvest(command.getYearOfHavest())
             .productId(command.getProductId())
             .quantity(command.getQuantity())

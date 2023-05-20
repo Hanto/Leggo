@@ -9,13 +9,14 @@ public class SellOrderId
 {
     UUID id;
 
-    public SellOrderId()
+    public SellOrderId(UUID uuid)
     {
-        id = UUID.randomUUID();
+        id = uuid;
     }
-    public SellOrderId(String uuid)
+
+    public static SellOrderId of(String uuid)
     {
-        id = UUID.fromString(uuid);
+        return new SellOrderId(UUID.fromString(uuid));
     }
 
 }

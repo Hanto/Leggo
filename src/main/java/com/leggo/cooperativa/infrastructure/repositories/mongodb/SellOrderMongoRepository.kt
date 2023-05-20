@@ -45,7 +45,7 @@ class SellOrderMongoRepository
 
     private fun SellOrderEntity.toDomain(): SellOrder =
         SellOrder(
-            SellOrderId(this.sellOrderId),
+            SellOrderId.of(this.sellOrderId),
             Year.of(this.year),
             ProductId(this.productId),
             Kilogram.of(this.quantity),

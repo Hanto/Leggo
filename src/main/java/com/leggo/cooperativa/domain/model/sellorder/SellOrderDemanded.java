@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor @Getter @ToString @Builder
 public class SellOrderDemanded
 {
+    private final SellOrderId sellOrderId;
     private final Year yearOfHarvest;
     private final ProductId productId;
     private final Kilogram quantity;

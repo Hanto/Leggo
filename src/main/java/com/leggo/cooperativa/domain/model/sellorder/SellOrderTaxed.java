@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @Getter @ToString @Builder
 public class SellOrderTaxed
 {
+    private final SellOrderId sellOrderId;
     private final Year yearOfHarvest;
     private final ProductId productId;
     private final Kilogram quantity;

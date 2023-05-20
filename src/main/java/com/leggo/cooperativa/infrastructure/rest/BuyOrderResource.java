@@ -33,4 +33,3 @@ public class BuyOrderResource
         buyOrderUSeCase.createFederatedOrder(command);
     }
 }
-

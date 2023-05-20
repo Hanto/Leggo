@@ -1,8 +1,9 @@
 ###
-POST http://localhost:8080/api/sellorder/majorist
+POST http://{{serveraddress}}/api/sellorder/majorist
 Content-Type: application/json
 
 {
+  "sellOrderId": "7266b1e3-610c-42d8-a600-7c830bc4fff9",
   "yearOfHarvest": 2023,
   "productId": "NARANJA",
   "quantity": 300,

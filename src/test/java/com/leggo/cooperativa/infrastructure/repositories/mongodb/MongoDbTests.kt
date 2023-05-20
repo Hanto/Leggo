@@ -96,15 +96,15 @@ class MongoDbTests
             Contribution(ProducerId("PEPITO"), Kilogram.of(200.0)),
             ProductId("NARANJA"), LocalDateTime.now())
 
-        val sellOrder1 = SellOrder(SellOrderId(), Year.of(2023), ProductId.of("NARANJA"), Kilogram.of(20.0),
+        val sellOrder1 = SellOrder(SellOrderId(UUID.randomUUID()), Year.of(2023), ProductId.of("NARANJA"), Kilogram.of(20.0),
             LocalDate.now(), Kilometer.of(180.0), PricePerKilogram.of("3.0"),
             Price.of("5.0"), Tax.of(15.0))
 
-        val sellOrder2 = SellOrder(SellOrderId(), Year.of(2023), ProductId.of("NARANJA"), Kilogram.of(20.0),
+        val sellOrder2 = SellOrder(SellOrderId(UUID.randomUUID()), Year.of(2023), ProductId.of("NARANJA"), Kilogram.of(20.0),
             LocalDate.now(), Kilometer.of(180.0), PricePerKilogram.of("3.0"),
             Price.of("5.0"), Tax.of(15.0))
 
-        val sellOrder3 = SellOrder(SellOrderId(), Year.of(2023), ProductId.of("LIMON"), Kilogram.of(20.0),
+        val sellOrder3 = SellOrder(SellOrderId(UUID.randomUUID()), Year.of(2023), ProductId.of("LIMON"), Kilogram.of(20.0),
             LocalDate.now(), Kilometer.of(180.0), PricePerKilogram.of("3.0"),
             Price.of("5.0"), Tax.of(15.0))
 

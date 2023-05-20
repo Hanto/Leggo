@@ -7,7 +7,6 @@ import com.leggo.cooperativa.domain.model.common.Year;
 import com.leggo.cooperativa.domain.model.producer.ProducerId;
 import com.leggo.cooperativa.domain.model.product.ProductId;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrder;
-import com.leggo.cooperativa.domain.model.sellorder.SellOrderId;
 import com.leggo.cooperativa.domain.model.sellorder.SellOrderTaxed;
 import com.leggo.cooperativa.domain.repositories.BuyOrderRepository;
 import com.leggo.cooperativa.domain.repositories.SellOrderRepository;
@@ -91,7 +90,7 @@ public class InventoryService
     private static SellOrder buildSellOrder(SellOrderTaxed orderDemand)
     {
         return SellOrder.builder()
-            .sellOrderId(new SellOrderId())
+            .sellOrderId(orderDemand.getSellOrderId())
             .yearOfHarvest(orderDemand.getYearOfHarvest())
             .productId(orderDemand.getProductId())
             .quantity(orderDemand.getQuantity())

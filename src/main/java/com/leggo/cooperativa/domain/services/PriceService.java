@@ -32,6 +32,7 @@ public class PriceService
     private static SellOrderProductPriced buildProducedPriced(SellOrderDemanded order, PricePerKilogram priceWithMargin)
     {
         return SellOrderProductPriced.builder()
+            .sellOrderId(order.getSellOrderId())
             .yearOfHarvest(order.getYearOfHarvest())
             .productId(order.getProductId())
             .quantity(order.getQuantity())
